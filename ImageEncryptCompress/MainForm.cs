@@ -35,11 +35,14 @@ namespace ImageEncryptCompress
         {
             double sigma = double.Parse(txtGaussSigma.Text);
             int maskSize = (int)nudMaskSize.Value ;
-            ImageMatrix = ImageOperations.GaussianFilter1D(ImageMatrix, maskSize, sigma);
+            //ImageMatrix = ImageOperations.GaussianFilter1D(ImageMatrix, maskSize, sigma);
+            ImageMatrix = EncryptImage.Encrypt(ImageMatrix);
             ImageOperations.DisplayImage(ImageMatrix, pictureBox2);
         }
 
-       
-       
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -104,6 +104,7 @@ namespace ImageEncryptCompress
             this.label2.Size = new System.Drawing.Size(184, 24);
             this.label2.TabIndex = 4;
             this.label2.Text = "Smoothed Image";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // btnGaussSmooth
             // 
@@ -124,7 +125,7 @@ namespace ImageEncryptCompress
             this.label3.Location = new System.Drawing.Point(788, 529);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(94, 21);
+            this.label3.Size = new System.Drawing.Size(90, 19);
             this.label3.TabIndex = 7;
             this.label3.Text = "Mask Size";
             // 
@@ -135,7 +136,7 @@ namespace ImageEncryptCompress
             this.label4.Location = new System.Drawing.Point(788, 577);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(120, 21);
+            this.label4.Size = new System.Drawing.Size(112, 19);
             this.label4.TabIndex = 9;
             this.label4.Text = "Gauss Sigma";
             // 
@@ -195,7 +196,7 @@ namespace ImageEncryptCompress
             this.label5.Location = new System.Drawing.Point(301, 530);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 21);
+            this.label5.Size = new System.Drawing.Size(57, 19);
             this.label5.TabIndex = 12;
             this.label5.Text = "Width";
             // 
@@ -206,7 +207,7 @@ namespace ImageEncryptCompress
             this.label6.Location = new System.Drawing.Point(301, 577);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(67, 21);
+            this.label6.Size = new System.Drawing.Size(63, 19);
             this.label6.TabIndex = 13;
             this.label6.Text = "Height";
             // 
@@ -247,7 +248,7 @@ namespace ImageEncryptCompress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1205, 615);
+            this.ClientSize = new System.Drawing.Size(1243, 630);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.txtGaussSigma);
