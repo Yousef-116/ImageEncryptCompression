@@ -33,10 +33,10 @@ namespace ImageEncryptCompress
 
         private void btnGaussSmooth_Click(object sender, EventArgs e)
         {
-            double sigma = double.Parse(txtGaussSigma.Text);
-            int maskSize = (int)nudMaskSize.Value ;
+            String seed = Init_seed.Text;
+            int Tap_position = (int)Tap_Position.Value ;
             //ImageMatrix = ImageOperations.GaussianFilter1D(ImageMatrix, maskSize, sigma);
-            ImageMatrix = EncryptImage.Encrypt(ImageMatrix);
+            ImageMatrix = EncryptImage.Encrypt(ImageMatrix, seed , Tap_position );
             ImageOperations.DisplayImage(ImageMatrix, pictureBox2);
         }
 
