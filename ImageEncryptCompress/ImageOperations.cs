@@ -4,6 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
+
 ///Algorithms Project
 ///Intelligent Scissors
 ///
@@ -22,17 +23,45 @@ namespace ImageEncryptCompress
         public double red, green, blue;
     }
     
-  
+    
     /// <summary>
     /// Library of static functions that deal with images
     /// </summary>
     public class ImageOperations
     {
+        public static void SaveImage(Bitmap image, string filePath)
+        {
+            image.Save(filePath, ImageFormat.Bmp);
+        }
+
+        public static Bitmap ConvertToBitmap(RGBPixel[,] imageMatrix)
+        {
+            int width = imageMatrix.GetLength(0);
+            int height = imageMatrix.GetLength(1);
+
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    RGBPixel pixel = imageMatrix[x, y];
+                    Color color = Color.FromArgb(pixel.red, pixel.green, pixel.blue);
+                    bitmap.SetPixel(x, y, color);
+                }
+            }
+
+            return bitmap;
+        }
+
+
         /// <summary>
         /// Open an image and load it into 2D array of colors (size: Height x Width)
         /// </summary>
         /// <param name="ImagePath">Image file path</param>
         /// <returns>2D array of colors</returns>
+
+
         public static RGBPixel[,] OpenImage(string ImagePath)
         {
             Bitmap original_bm = new Bitmap(ImagePath);
@@ -93,6 +122,7 @@ namespace ImageEncryptCompress
             return Buffer;
         }
         
+
         /// <summary>
         /// Get the height of the image 
         /// </summary>

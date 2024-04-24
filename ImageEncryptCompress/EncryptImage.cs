@@ -13,37 +13,57 @@ namespace ImageEncryptCompress
             int Height = ImageMatrix.GetLength(0);
             int Width = ImageMatrix.GetLength(1);
 
-            RGBPixelD Item1;
+            RGBPixelD Item1D;
             RGBPixel Item2;
+            int key;
 
-            generateNew8Bits(seed , Tap_position);
-            for (int j = 0; j < Width; j++)
+            //generateNew8Bits(seed , Tap_position);
+
+            //for (int i = 0; i < Width-1; i++)
+            //{
+            //    Console.WriteLine("index " + i + " red : " + ImageMatrix[i, 0].red + " Green : " + ImageMatrix[i, 0].green + " Blue : " + ImageMatrix[i, 0].blue);
+            //}
+
+
+            for (int i = 0; i < Height; i++)
             {
-                for (int i = 0; i < Height; i++)
+                for (int j = 0; j < Width; j++)
                 {
 
                     Item2 = ImageMatrix[i, j];
+                    key = generateNew8Bits(ref seed, Tap_position);
 
-                    Item1.red = 5 * ImageMatrix[i,j].red;
+                    Item1D.red = key ^ Item2.red ;
                     
-                    //generateNew8Bits(seed , Tap_position);
-                    
-                    ImageMatrix[i, j].green = 200;
-                    
-                    //generateNew8Bits(seed , Tap_position);
-                    
-                    ImageMatrix[i, j].blue = 60;
+                    key = generateNew8Bits(ref seed , Tap_position);
+
+                    Item1D.green = key ^ Item2.green;
+
+                    key = generateNew8Bits(ref seed , Tap_position);
+
+                    Item1D.blue = key ^ Item2.blue;
+
+                    ImageMatrix[i, j].red = (byte)Item1D.red;
+                    ImageMatrix[i, j].green = (byte)Item1D.green;
+                    ImageMatrix[i, j].blue = (byte)Item1D.blue;
                 }
             }
+
+            //for (int i = 0; i<Width; i++)
+            //{
+            //    Console.WriteLine("index "+i+" red : "+ImageMatrix[i, 0].red + " Green : " + ImageMatrix[i, 0].green + " Blue : "+ ImageMatrix[i, 0].blue); 
+            //}
+
 
             return ImageMatrix;
         }
 
-        public static void generateNew8Bits(String seed , int Tap_position )
+        public static int generateNew8Bits(ref String seed , int Tap_position )
         {
             int tapbit ,lastbit ,newbit;
-            //int colorrepresitation = 8;
-            Console.WriteLine("seed :" + seed);
+            String keybits = "";
+
+            //Console.WriteLine("seed :" + seed);
             for (int i = 0; i < 8; i++)
             {
 
@@ -52,17 +72,19 @@ namespace ImageEncryptCompress
 
                 newbit = tapbit ^ lastbit;
 
-                Console.WriteLine("tap : " + tapbit + " last bit: " + lastbit + " newbit: " + newbit);
+               // Console.WriteLine("tap : " + tapbit + " last bit: " + lastbit + " newbit: " + newbit);
 
+                keybits += newbit.ToString();
 
-                seed = seed.Substring(1) + newbit.ToString();  
+                seed = seed.Substring(1) + newbit.ToString();
 
-
-
-                Console.WriteLine("result "+i +"  = "+seed);
+             //   Console.WriteLine("result "+i +"  = "+seed);
             }
 
-            /**/
+            int key = Convert.ToInt32(keybits, 2);
+           // Console.WriteLine("key = " + key);
+            return key;
+
 
         }
     }
