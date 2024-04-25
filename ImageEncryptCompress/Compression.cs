@@ -182,9 +182,37 @@ namespace ImageEncryptCompress
             PrintBits(RedQueue.Dequeue(), new int[RedFrequency.Count], 0, 0);
             PrintBits(GreenQueue.Dequeue(), new int[GreenFrequency.Count], 0, 1);
             PrintBits(BlueQueue.Dequeue(), new int[BlueFrequency.Count], 0, 2);
-            
-            MessageBox.Show("DOne");
-            
+
+            // calcualte ratio
+            double original_size = Height * Width * 24;
+            double compressed_size = 0;
+
+            foreach (var RedPixel in RedFrequency)
+            {
+                int frequency = RedPixel.Value;
+                int size = RedCompressed[RedPixel.Key.ToString()].Length;
+
+                compressed_size += frequency * size;
+            }
+            foreach (var GreenPixel in GreenFrequency)
+            {
+                int frequency = GreenPixel.Value;
+                int size = GreenCompressed[GreenPixel.Key.ToString()].Length;
+
+                compressed_size += frequency * size;
+            }
+            foreach (var BluePixel in BlueFrequency)
+            {
+                int frequency = BluePixel.Value;
+                int size = BlueCompressed[BluePixel.Key.ToString()].Length;
+
+                compressed_size += frequency * size;
+            }
+
+            MessageBox.Show($"Original size = {original_size} bits = {original_size / 8} bytes = {original_size / (8*1024)} KB");
+            MessageBox.Show($"Compressed size = {compressed_size} bits = {compressed_size / 8} bytes = {compressed_size / (8 * 1024)} KB");
+            MessageBox.Show($"Compression ratio = {(compressed_size / original_size) * 100}%");
+
             return ImageMatrix;
         }
 
