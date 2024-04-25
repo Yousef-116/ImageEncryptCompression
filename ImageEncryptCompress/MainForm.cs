@@ -51,7 +51,18 @@ namespace ImageEncryptCompress
         private void encrypt_btn_Click(object sender, EventArgs e)
         {
             String seed = Init_seed.Text;
-            int Tap_position = Convert.ToInt32(Tap.Text) ;
+            String tempseed = "";
+            int Tap_position = Convert.ToInt32(Tap.Text);
+
+            if (IsAlphanumeric.Checked == true)
+            {
+               foreach(char c in seed)
+               {
+                    string charbinaryRepresentation = Convert.ToString(c, 2).PadLeft(8, '0');
+                    tempseed += charbinaryRepresentation;
+               }
+               seed = tempseed;
+            }
 
             if(!validation(seed, Tap_position))
             {
