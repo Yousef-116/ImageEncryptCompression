@@ -20,6 +20,7 @@ namespace ImageEncryptCompress
             }
         }
 
+        
         // Image Data Structures 
         // Frequency Dictionaries
         public static Dictionary<int, int> RedFrequency = new Dictionary<int, int>();
@@ -31,13 +32,10 @@ namespace ImageEncryptCompress
         public static PriorityQueue<HuffmanNode> GreenQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
         public static PriorityQueue<HuffmanNode> BlueQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
 
-        // Text Data Structures
-        // Frequency for each character
-        public static Dictionary<char, int> frequency = new Dictionary<char, int>();
-
-        // Priority Queue
-        public static PriorityQueue<HuffmanNode> queue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
-
+        // Compressed map for each color
+        public static Dictionary<string, string> RedCompressed = new Dictionary<string, string>();
+        public static Dictionary<string, string> GreenCompressed = new Dictionary<string, string>();
+        public static Dictionary<string, string> BlueCompressed = new Dictionary<string, string>();
 
         // Tree Node
         public class HuffmanNode
@@ -181,35 +179,11 @@ namespace ImageEncryptCompress
                 BlueQueue.Enqueue(node);
             }
 
-            PrintBits(RedQueue.Dequeue(), new int[RedFrequency.Count], 0);
-            //// Compressed Dictionary
-            //Dictionary<int, int[]> RedCompressed = StoreCompressedBits(RedQueue.Dequeue(), new int[RedFrequency.Count], 0, new Dictionary<int, int[]>());
-            //Dictionary<int, int[]> GreenCompressed = StoreCompressedBits(GreenQueue.Dequeue(), new int[GreenFrequency.Count], 0, new Dictionary<int, int[]>());
-            //Dictionary<int, int[]> BlueCompressed = StoreCompressedBits(BlueQueue.Dequeue(), new int[BlueFrequency.Count], 0, new Dictionary<int, int[]>());
-
-            //// Storing Compressed Image
-            //RGBPixel[,] CompressedImage = new RGBPixel[Height, Width];
-            //for (int i = 0; i < Height; i++)
-            //{
-            //    for (int j = 0; j < Width; j++)
-            //    {
-            //        int red = ImageMatrix[i, j].red;
-            //        int green = ImageMatrix[i, j].green;
-            //        int blue = ImageMatrix[i, j].blue;
-
-            //        int new_red = ConvertBinaryToInt(RedCompressed[red]);
-            //        int new_green = ConvertBinaryToInt(GreenCompressed[green]);
-            //        int new_blue = ConvertBinaryToInt(BlueCompressed[blue]);
-
-            //        CompressedImage[i, j].red = (byte)new_red;
-            //        CompressedImage[i, j].blue = (byte)new_blue;
-            //        CompressedImage[i, j].green = (byte)new_green;
-                    
-            //    }
-            //}
-
-
-            //// De-Compress
+            PrintBits(RedQueue.Dequeue(), new int[RedFrequency.Count], 0, 0);
+            PrintBits(GreenQueue.Dequeue(), new int[GreenFrequency.Count], 0, 1);
+            PrintBits(BlueQueue.Dequeue(), new int[BlueFrequency.Count], 0, 2);
+            
+            MessageBox.Show("DOne");
             
             return ImageMatrix;
         }
@@ -217,50 +191,47 @@ namespace ImageEncryptCompress
 
         
 
-        //public static Dictionary<int, int[]> StoreCompressedBits(HuffmanNode root, int[] arr, int top, Dictionary<int, int[]> storage)
-        //{
-        //    if (root.left != null)
-        //    {
-        //        arr[top] = 0;
-        //        StoreCompressedBits(root.left, arr, top+1, storage);
-        //    }
+        
 
-        //    if (root.right != null) 
-        //    {
-        //        arr[top] = 1;
-        //        StoreCompressedBits(root.right, arr, top+1, storage);
-        //    }
-
-        //    if (root.left == null && root.right == null)
-        //    {
-        //        storage.Add(root.data, new int[top + 1]);
-        //        arr = new int[arr.Length];
-        //        top = 0;
-
-        //    }
-        //    return storage;
-        //}
-
-        public static void PrintBits(HuffmanNode root, int[] arr, int top)
+        public static void PrintBits(HuffmanNode root, int[] arr, int top, int color)
         {
             if (root.left != null)
             {
                 arr[top] = 0;
-                PrintBits(root.left, arr, top + 1);
+                PrintBits(root.left, arr, top + 1, color);
             }
 
             if (root.right != null)
             {
                 arr[top] = 1;
-                PrintBits(root.right, arr, top + 1);
+                PrintBits(root.right, arr, top + 1, color);
             }
 
             if (root.left == null && root.right == null)
             {
-                MessageBox.Show($"Printing node name: {root.data}");
+                //MessageBox.Show($"Printing node name: {root.data}");
+                string bits = string.Empty;
                 for (int i = 0; i < top; i++)
                 {
-                    MessageBox.Show($"{arr[i]}");
+                    if (arr[i] == 1)
+                        bits += '1';
+                    else
+                        bits += '0';
+
+                    //MessageBox.Show($"{arr[i]}");
+                }
+
+                if (color == 0) //red
+                {
+                    RedCompressed.Add(root.data.ToString(), bits);
+                }
+                else if (color == 1)    //green
+                {
+                    GreenCompressed.Add(root.data.ToString(), bits);
+                }
+                else if (color == 2)  //Blue
+                {
+                    BlueCompressed.Add(root.data.ToString(), bits);
                 }
             }
         }
