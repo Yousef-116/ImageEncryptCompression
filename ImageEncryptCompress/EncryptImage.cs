@@ -16,6 +16,7 @@ namespace ImageEncryptCompress
             RGBPixelD Item1D;
             RGBPixel Item2;
             int key;
+            RGBPixel[,] EncryptedImageMatrix = new RGBPixel[Height, Width];
 
             //generateNew8Bits(seed , Tap_position);
 
@@ -43,9 +44,9 @@ namespace ImageEncryptCompress
 
                     Item1D.blue = key ^ Item2.blue;
 
-                    ImageMatrix[i, j].red = (byte)Item1D.red;
-                    ImageMatrix[i, j].green = (byte)Item1D.green;
-                    ImageMatrix[i, j].blue = (byte)Item1D.blue;
+                    EncryptedImageMatrix[i, j].red = (byte)Item1D.red;
+                    EncryptedImageMatrix[i, j].green = (byte)Item1D.green;
+                    EncryptedImageMatrix[i, j].blue = (byte)Item1D.blue;
                 }
             }
 
@@ -55,7 +56,7 @@ namespace ImageEncryptCompress
             //}
 
 
-            return ImageMatrix;
+            return EncryptedImageMatrix;
         }
 
         public static int generateNew8Bits(ref String seed , int Tap_position )
