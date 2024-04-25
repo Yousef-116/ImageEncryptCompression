@@ -55,9 +55,5 @@ namespace ImageEncryptCompress
                 //string saveFilePath = saveFileDialog1.FileName;
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

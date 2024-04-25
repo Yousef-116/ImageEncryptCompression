@@ -58,7 +58,7 @@ namespace ImageEncryptCompress
             return ImageMatrix;
         }
 
-        public static int generateNew8Bits(ref String seed , int Tap_position )
+        public static Byte generateNew8Bits(ref String seed , int Tap_position )
         {
             int tapbit ,lastbit ,newbit;
             String keybits = "";
@@ -81,7 +81,7 @@ namespace ImageEncryptCompress
              //   Console.WriteLine("result "+i +"  = "+seed);
             }
 
-            int key = Convert.ToInt32(keybits, 2);
+            Byte key = Convert.ToByte(keybits, 2);
            // Console.WriteLine("key = " + key);
             return key;
 
