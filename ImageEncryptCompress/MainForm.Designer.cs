@@ -140,6 +140,7 @@ namespace ImageEncryptCompress
             // 
             // txtHeight
             // 
+            this.txtHeight.BackColor = System.Drawing.Color.White;
             this.txtHeight.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtHeight.Location = new System.Drawing.Point(422, 829);
             this.txtHeight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -150,6 +151,7 @@ namespace ImageEncryptCompress
             // 
             // txtWidth
             // 
+            this.txtWidth.BackColor = System.Drawing.Color.White;
             this.txtWidth.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtWidth.Location = new System.Drawing.Point(422, 770);
             this.txtWidth.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
