@@ -21,7 +21,7 @@ namespace ImageEncryptCompress
         private void btnOpen_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            if(decompressBtn.Checked == false)
+            if(BinaryFileCheckBox.Checked == false)
             {
                 openFileDialog1.Filter = "Image File |*.bmp;*.png;*.jpg";
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -29,6 +29,7 @@ namespace ImageEncryptCompress
                     //Open the browsed image and display it
                     string OpenedFilePath = openFileDialog1.FileName;
                     ImageMatrix = ImageOperations.OpenImage(OpenedFilePath);
+                    imageOpened = true;
                 }
             }
             else
@@ -39,14 +40,16 @@ namespace ImageEncryptCompress
                     //Open the browsed image and display it
                     string OpenedFilePath = openFileDialog1.FileName;
                     ImageMatrix = Decompressoin.DecompressImage(OpenedFilePath);
+                    imageOpened = true;
                 }
             }
 
-
-            ImageOperations.DisplayImage(ImageMatrix, pictureBox1);
-            txtWidth.Text = ImageOperations.GetWidth(ImageMatrix).ToString();
-            txtHeight.Text = ImageOperations.GetHeight(ImageMatrix).ToString();
-            imageOpened = true;
+            if (imageOpened == true)
+            {
+                ImageOperations.DisplayImage(ImageMatrix, pictureBox1);
+                txtWidth.Text = ImageOperations.GetWidth(ImageMatrix).ToString();
+                txtHeight.Text = ImageOperations.GetHeight(ImageMatrix).ToString();
+            }
         }
 
         private void compress_btn_Click(object sender, EventArgs e)

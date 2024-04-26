@@ -45,7 +45,7 @@ namespace ImageEncryptCompress
             this.panel2 = new System.Windows.Forms.Panel();
             this.Tap = new System.Windows.Forms.TextBox();
             this.IsAlphanumeric = new System.Windows.Forms.CheckBox();
-            this.decompressBtn = new System.Windows.Forms.CheckBox();
+            this.BinaryFileCheckBox = new System.Windows.Forms.CheckBox();
             this.compress_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -81,7 +81,7 @@ namespace ImageEncryptCompress
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(205, 70);
             this.btnOpen.TabIndex = 2;
-            this.btnOpen.Text = "Open Image";
+            this.btnOpen.Text = "Open File";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
@@ -240,16 +240,16 @@ namespace ImageEncryptCompress
             this.IsAlphanumeric.Text = "Alphanumeric";
             this.IsAlphanumeric.UseVisualStyleBackColor = true;
             // 
-            // decompressBtn
+            // BinaryFileCheckBox
             // 
-            this.decompressBtn.AutoSize = true;
-            this.decompressBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.decompressBtn.Location = new System.Drawing.Point(278, 830);
-            this.decompressBtn.Name = "decompressBtn";
-            this.decompressBtn.Size = new System.Drawing.Size(148, 29);
-            this.decompressBtn.TabIndex = 19;
-            this.decompressBtn.Text = "Decompress";
-            this.decompressBtn.UseVisualStyleBackColor = true;
+            this.BinaryFileCheckBox.AutoSize = true;
+            this.BinaryFileCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BinaryFileCheckBox.Location = new System.Drawing.Point(282, 830);
+            this.BinaryFileCheckBox.Name = "BinaryFileCheckBox";
+            this.BinaryFileCheckBox.Size = new System.Drawing.Size(129, 29);
+            this.BinaryFileCheckBox.TabIndex = 19;
+            this.BinaryFileCheckBox.Text = "Binary File";
+            this.BinaryFileCheckBox.UseVisualStyleBackColor = true;
             // 
             // compress_btn
             // 
@@ -268,7 +268,7 @@ namespace ImageEncryptCompress
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1663, 876);
-            this.Controls.Add(this.decompressBtn);
+            this.Controls.Add(this.BinaryFileCheckBox);
             this.Controls.Add(this.IsAlphanumeric);
             this.Controls.Add(this.Tap);
             this.Controls.Add(this.panel2);
@@ -319,7 +319,7 @@ namespace ImageEncryptCompress
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox Tap;
         private System.Windows.Forms.CheckBox IsAlphanumeric;
-        private System.Windows.Forms.CheckBox decompressBtn;
+        private System.Windows.Forms.CheckBox BinaryFileCheckBox;
         private System.Windows.Forms.Button compress_btn;
     }
 }

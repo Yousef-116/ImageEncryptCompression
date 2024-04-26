@@ -60,15 +60,16 @@ namespace ImageEncryptCompress
         public static Dictionary<byte, Tuple<byte, byte>> BlueHuffmanTree = new Dictionary<byte, Tuple<byte, byte>>();
 
         private static int RedCompressedBits = 0, GreenCompressedBits = 0, BlueCompressedBits = 0;
+        public static int ImageHeight = 0, ImageWidth = 0;
 
         // Compress Function
         public static void CompressImage(RGBPixel[,] ImageMatrix)
         {
-            int Height = ImageOperations.GetHeight(ImageMatrix);  // rows
-            int Width = ImageOperations.GetWidth(ImageMatrix);   // columns   
+            ImageHeight = ImageOperations.GetHeight(ImageMatrix);  // rows
+            ImageWidth = ImageOperations.GetWidth(ImageMatrix);   // columns   
 
             // Count Frequencies for each color
-            CalcFrequency(ImageMatrix, Height, Width);
+            CalcFrequency(ImageMatrix);
 
             // Initializing Queues
             InitColorQueues();
@@ -80,21 +81,21 @@ namespace ImageEncryptCompress
             BinaryCode();
 
             // calcualte compression ratio
-            CalcCompressionRatio(Height, Width);
+            CalcCompressionRatio();
 
             // Compressed Image
-            List<byte>[] CompressedImage = CreateCompressedImage(ImageMatrix, Height, Width);
+            List<byte>[] CompressedImage = CreateCompressedImage(ImageMatrix);
 
             // Save in Binary File
-            BinaryFileOperations.CreateBinaryFile(CompressedImage, Height, Width, RedHuffmanTree, GreenHuffmanTree, BlueHuffmanTree);
+            BinaryFileOperations.CreateBinaryFile(CompressedImage);
         }
 
-        private static void CalcFrequency(RGBPixel[,] ImageMatrix, int Height, int Width)
+        private static void CalcFrequency(RGBPixel[,] ImageMatrix)
         {
 
-            for (int i = 0; i < Height; i++)
+            for (int i = 0; i < ImageHeight; i++)
             {
-                for (int j = 0; j < Width; j++)
+                for (int j = 0; j < ImageWidth; j++)
                 {
 
                     byte red = ImageMatrix[i, j].red; // Extract red component
@@ -282,9 +283,9 @@ namespace ImageEncryptCompress
             }
         }
 
-        private static void CalcCompressionRatio(int Height, int Width)
+        private static void CalcCompressionRatio()
         {
-            double original_size = Height * Width * 24;
+            double original_size = ImageHeight * ImageWidth * 24;
             double compressed_size = RedCompressedBits + GreenCompressedBits + BlueCompressedBits;
             
             /*
@@ -318,7 +319,7 @@ namespace ImageEncryptCompress
             Console.WriteLine($"Compression ratio = {(compressed_size / original_size) * 100}%");
         }
 
-        private static List<byte>[] CreateCompressedImage(RGBPixel[,] ImageMatrix, int Height, int Width)
+        private static List<byte>[] CreateCompressedImage(RGBPixel[,] ImageMatrix)
         {
             List<byte>[] CompressedImage = new List<byte>[3];
             CompressedImage[0] = new List<byte>() { 0 };
@@ -329,9 +330,9 @@ namespace ImageEncryptCompress
             string redBinaryCode, greenBinaryCode, blueBinaryCode;
             int redStartIndex = 0, greenStartIndex = 0, blueStartIndex = 0;
 
-            for (int i = 0; i < Height; ++i)
+            for (int i = 0; i < ImageHeight; ++i)
             {
-                for (int j = 0; j < Width; ++j)
+                for (int j = 0; j < ImageWidth; ++j)
                 {
                     redBinaryCode = RedBinaryCode[ImageMatrix[i, j].red];
                     AddBits(CompressedImage[0], redBinaryCode, ref redStartIndex);
