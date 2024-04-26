@@ -99,6 +99,7 @@ namespace ImageEncryptCompress
                 {
 
                     byte red = ImageMatrix[i, j].red; // Extract red component
+                    //Console.Write(red + " ");
                     byte green = ImageMatrix[i, j].green;
                     byte blue = ImageMatrix[i, j].blue;
 
@@ -106,7 +107,6 @@ namespace ImageEncryptCompress
                     if (!RedFrequency.ContainsKey(red))
                         RedFrequency[red] = 0;
                     RedFrequency[red]++;
-
 
                     if (!GreenFrequency.ContainsKey(green))
                         GreenFrequency[green] = 0;
@@ -118,12 +118,13 @@ namespace ImageEncryptCompress
 
                     //MessageBox.Show($"[red, green, blue] = [{red}, {green}, {blue}]");
                 }
+                //Console.WriteLine();
             }
         }
 
         private static void InitColorQueues()
         {
-            Console.WriteLine("Red Color Frequencies");
+            //Console.WriteLine("Red Color Frequencies");
             foreach (var RedPixel in RedFrequency)
             {
                 HuffmanNode node = new HuffmanNode();
@@ -134,10 +135,10 @@ namespace ImageEncryptCompress
                 node.frequency = RedPixel.Value;
 
                 RedQueue.Enqueue(node);
-                Console.WriteLine(node.Hexa + ":" + node.frequency);
+                //Console.WriteLine(node.Hexa + ":" + node.frequency);
             }
 
-            Console.WriteLine("\nGreen Color Frequencies");
+            //Console.WriteLine("\nGreen Color Frequencies");
             foreach (var GreenPixel in GreenFrequency)
             {
                 HuffmanNode node = new HuffmanNode();
@@ -148,10 +149,10 @@ namespace ImageEncryptCompress
                 node.frequency = GreenPixel.Value;
 
                 GreenQueue.Enqueue(node);
-                Console.WriteLine(node.Hexa + ":" + node.frequency);
+                //Console.WriteLine(node.Hexa + ":" + node.frequency);
             }
 
-            Console.WriteLine("\nBlue Color Frequencies");
+            //Console.WriteLine("\nBlue Color Frequencies");
             foreach (var BluePixel in BlueFrequency)
             {
                 HuffmanNode node = new HuffmanNode();
@@ -162,7 +163,7 @@ namespace ImageEncryptCompress
                 node.frequency = BluePixel.Value;
 
                 BlueQueue.Enqueue(node);
-                Console.WriteLine(node.Hexa + ":" + node.frequency);
+                //Console.WriteLine(node.Hexa + ":" + node.frequency);
             }
         }
 
@@ -185,12 +186,12 @@ namespace ImageEncryptCompress
 
                 RedHuffmanTree.Add(node.Hexa, new Tuple<byte, byte>(node.left.Hexa, node.right.Hexa));
             }
-            Console.WriteLine("\nRed Huffman Tree");
-            foreach(var node in RedHuffmanTree)
-            {
-                Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
-            }
-            Console.WriteLine("Red tree size: " + RedHuffmanTree.Count);
+            //Console.WriteLine("\nRed Huffman Tree");
+            //foreach(var node in RedHuffmanTree)
+            //{
+            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
+            //}
+            //Console.WriteLine("Red tree size: " + RedHuffmanTree.Count);
 
             nodeNum = 1;
             for (int k = 0; k < GreenFrequency.Count - 1; k++)
@@ -231,13 +232,13 @@ namespace ImageEncryptCompress
 
         private static void BinaryCode()
         {
-            Console.WriteLine("\n\nRed Colors Binary Code");
+            //Console.WriteLine("\n\nRed Colors Binary Code");
             GetBinaryCode(RedQueue.Dequeue(), new int[RedFrequency.Count], 0, Color.RED);
 
-            Console.WriteLine("\nGreen Colors Binary Code");
+            //Console.WriteLine("\nGreen Colors Binary Code");
             GetBinaryCode(GreenQueue.Dequeue(), new int[GreenFrequency.Count], 0, Color.GREEN);
 
-            Console.WriteLine("\nBlue Colors Binary Code");
+            //Console.WriteLine("\nBlue Colors Binary Code");
             GetBinaryCode(BlueQueue.Dequeue(), new int[GreenFrequency.Count], 0, Color.BLUE);
         }
 
@@ -264,7 +265,7 @@ namespace ImageEncryptCompress
                     bits +=  (char)(arr[i] + '0');
                 }
 
-                Console.WriteLine(root.Hexa + ":" +  bits);
+                //Console.WriteLine(root.Hexa + ":" +  bits);
                 if (color == Color.RED)
                 {
                     RedBinaryCode.Add(root.Hexa, bits);

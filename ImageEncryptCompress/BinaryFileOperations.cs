@@ -118,61 +118,64 @@ namespace ImageEncryptCompress
                     //Red Huffman Tree
                     byte parent, child1, child2;
 
-                    Console.WriteLine("\nRed Huffman Tree");
+                    //Console.WriteLine("\nRed Huffman Tree");
+                    Decompressoin.redHuffmanTreeRoot = treeSize;
                     while (treeSize-- > 0)
                     {
                         parent = reader.ReadByte();
                         child1 = reader.ReadByte();
                         child2 = reader.ReadByte();
                         Decompressoin.RedHuffmanTree.Add(parent, new Tuple<byte, byte>(child1, child2));
-                        Console.WriteLine($"{parent}: {child1}, {child2}");
+                        //Console.WriteLine($"{parent}: {child1}, {child2}");
                     }
 
                     //Green Huffman Tree length
                     treeSize = reader.ReadByte();
                     //Green Huffman Tree
-                    Console.WriteLine("\nGreen Huffman Tree");
+                    //Console.WriteLine("\nGreen Huffman Tree");
+                    Decompressoin.greenHuffmanTreeRoot = treeSize;
                     while (treeSize-- > 0)
                     {
                         parent = reader.ReadByte();
                         child1 = reader.ReadByte();
                         child2 = reader.ReadByte();
                         Decompressoin.GreenHuffmanTree.Add(parent, new Tuple<byte, byte>(child1, child2));
-                        Console.WriteLine($"{parent}: {child1}, {child2}");
+                        //Console.WriteLine($"{parent}: {child1}, {child2}");
                     }
 
                     //Blue Huffman Tree length
                     treeSize = reader.ReadByte();
                     //Blue Huffman Tree
-                    Console.WriteLine("\nBlue Huffman Tree");
+                    //Console.WriteLine("\nBlue Huffman Tree");
+                    Decompressoin.blueHuffmanTreeRoot = treeSize;
                     while (treeSize-- > 0)
                     {
                         parent = reader.ReadByte();
                         child1 = reader.ReadByte();
                         child2 = reader.ReadByte();
                         Decompressoin.BlueHuffmanTree.Add(parent, new Tuple<byte, byte>(child1, child2));
-                        Console.WriteLine($"{parent}: {child1}, {child2}");
+                        //Console.WriteLine($"{parent}: {child1}, {child2}");
                     }
 
                     #endregion
 
-                    #region
+                    #region BinaryCode
 
                     int listLength = reader.ReadInt32();
-                    Console.WriteLine(listLength);
+                    //Console.WriteLine(listLength);
                     byte byteValue = 0;
 
                     while (listLength-- > 0)
                     {
                         byteValue = reader.ReadByte();
-                        Console.Write(byteValue + " ");
+                        //Console.Write(byteValue + " ");
                         //Console.WriteLine(Convert.ToString(byteValue, 2).PadLeft(8, '0'));
                         Decompressoin.redBinaryCode.Append(Convert.ToString(byteValue, 2).PadLeft(8, '0'));
                     }
                     //Console.WriteLine(Decompressoin.redBinaryCode);
 
                     listLength = reader.ReadInt32();
-                    Console.WriteLine(listLength);
+                    //Console.WriteLine(listLength);
                     while (listLength-- > 0)
                     {
                         byteValue = reader.ReadByte();
@@ -182,7 +185,7 @@ namespace ImageEncryptCompress
                     //Console.WriteLine("\n\n" + Decompressoin.greenBinaryCode);
 
                     listLength = reader.ReadInt32();
-                    Console.WriteLine(listLength);
+                    //Console.WriteLine(listLength);
                     while (listLength-- > 0)
                     {
                         byteValue = reader.ReadByte();
