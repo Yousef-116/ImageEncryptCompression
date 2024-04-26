@@ -21,28 +21,54 @@ namespace ImageEncryptCompress
         private void btnOpen_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            if(decompressBtn.Checked == false)
             {
-                //Open the browsed image and display it
-                string OpenedFilePath = openFileDialog1.FileName;
-                ImageMatrix = ImageOperations.OpenImage(OpenedFilePath);
-                ImageOperations.DisplayImage(ImageMatrix, pictureBox1);
+                openFileDialog1.Filter = "Image File |*.bmp;*.png;*.jpg";
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    //Open the browsed image and display it
+                    string OpenedFilePath = openFileDialog1.FileName;
+                    ImageMatrix = ImageOperations.OpenImage(OpenedFilePath);
+                }
             }
+            else
+            {
+                openFileDialog1.Filter = "Binary File |*.bin";
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    //Open the browsed image and display it
+                    string OpenedFilePath = openFileDialog1.FileName;
+                    ImageMatrix = Decompressoin.DecompressImage(OpenedFilePath);
+                }
+            }
+
+
+            ImageOperations.DisplayImage(ImageMatrix, pictureBox1);
             txtWidth.Text = ImageOperations.GetWidth(ImageMatrix).ToString();
             txtHeight.Text = ImageOperations.GetHeight(ImageMatrix).ToString();
             imageOpened = true;
         }
 
+        private void compress_btn_Click(object sender, EventArgs e)
+        {
+            if (imageOpened == false)
+            {
+                MessageBox.Show("You must open an image first");
+                return;
+            }
+            Compression.CompressImage(ImageMatrix);
+        }
+
         private bool validation(String seed, int Tap_position)
         {
-            if(Tap_position < 0 || Tap_position >= seed.Length)
+            if (Tap_position < 0 || Tap_position >= seed.Length)
             {
                 MessageBox.Show("Tap Position is not valid");
                 return false;
             }
-            else if(imageOpened == false)
+            else if (imageOpened == false)
             {
-                MessageBox.Show("You must open an image");
+                MessageBox.Show("You must open an image first");
                 return false;
             }
             return true;

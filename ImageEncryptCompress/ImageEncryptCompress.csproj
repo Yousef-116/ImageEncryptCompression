@@ -50,7 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinaryFileOperations.cs" />
     <Compile Include="Compression.cs" />
+    <Compile Include="Decompressoin.cs" />
     <Compile Include="EncryptImage.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
