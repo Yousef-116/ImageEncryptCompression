@@ -114,18 +114,18 @@ namespace ImageEncryptCompress
                     #region HuffmanTree
 
                     //Red Huffman Tree length
-                    byte treeSize = reader.ReadByte();
+                    short treeSize = reader.ReadByte();
                     //Red Huffman Tree
-                    byte parent, child1, child2;
+                    short parent, child1, child2;
 
                     //Console.WriteLine("\nRed Huffman Tree");
-                    Decompressoin.redHuffmanTreeRoot = treeSize;
+                    Decompressoin.redHuffmanTreeRoot = (short)(treeSize + 259);
                     while (treeSize-- > 0)
                     {
-                        parent = reader.ReadByte();
-                        child1 = reader.ReadByte();
-                        child2 = reader.ReadByte();
-                        Decompressoin.RedHuffmanTree.Add(parent, new Tuple<byte, byte>(child1, child2));
+                        parent = reader.ReadInt16();
+                        child1 = reader.ReadInt16();
+                        child2 = reader.ReadInt16();
+                        Decompressoin.RedHuffmanTree.Add(parent, new Tuple<short, short>(child1, child2));
                         //Console.WriteLine($"{parent}: {child1}, {child2}");
                     }
 
@@ -133,13 +133,13 @@ namespace ImageEncryptCompress
                     treeSize = reader.ReadByte();
                     //Green Huffman Tree
                     //Console.WriteLine("\nGreen Huffman Tree");
-                    Decompressoin.greenHuffmanTreeRoot = treeSize;
+                    Decompressoin.greenHuffmanTreeRoot = (short)(treeSize + 259);
                     while (treeSize-- > 0)
                     {
-                        parent = reader.ReadByte();
-                        child1 = reader.ReadByte();
-                        child2 = reader.ReadByte();
-                        Decompressoin.GreenHuffmanTree.Add(parent, new Tuple<byte, byte>(child1, child2));
+                        parent = reader.ReadInt16();
+                        child1 = reader.ReadInt16();
+                        child2 = reader.ReadInt16();
+                        Decompressoin.GreenHuffmanTree.Add(parent, new Tuple<short, short>(child1, child2));
                         //Console.WriteLine($"{parent}: {child1}, {child2}");
                     }
 
@@ -147,13 +147,13 @@ namespace ImageEncryptCompress
                     treeSize = reader.ReadByte();
                     //Blue Huffman Tree
                     //Console.WriteLine("\nBlue Huffman Tree");
-                    Decompressoin.blueHuffmanTreeRoot = treeSize;
+                    Decompressoin.blueHuffmanTreeRoot = (short)(treeSize + 259);
                     while (treeSize-- > 0)
                     {
-                        parent = reader.ReadByte();
-                        child1 = reader.ReadByte();
-                        child2 = reader.ReadByte();
-                        Decompressoin.BlueHuffmanTree.Add(parent, new Tuple<byte, byte>(child1, child2));
+                        parent = reader.ReadInt16();
+                        child1 = reader.ReadInt16();
+                        child2 = reader.ReadInt16();
+                        Decompressoin.BlueHuffmanTree.Add(parent, new Tuple<short, short>(child1, child2));
                         //Console.WriteLine($"{parent}: {child1}, {child2}");
                     }
 

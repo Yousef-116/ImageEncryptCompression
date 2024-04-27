@@ -32,7 +32,7 @@ namespace ImageEncryptCompress
         // Tree Node
         public class HuffmanNode
         {
-            public byte Hexa;
+            public short Hexa;
             public int frequency;
             public HuffmanNode left, right;
         }
@@ -54,14 +54,14 @@ namespace ImageEncryptCompress
         public static Dictionary<int, string> GreenBinaryCode = new Dictionary<int, string>();
         public static Dictionary<int, string> BlueBinaryCode = new Dictionary<int, string>();
 
-        // Huffman Tree each color
-        public static Dictionary<byte, Tuple<byte, byte>> RedHuffmanTree = new Dictionary<byte, Tuple<byte, byte>>();
-        public static Dictionary<byte, Tuple<byte, byte>> GreenHuffmanTree = new Dictionary<byte, Tuple<byte, byte>>();
-        public static Dictionary<byte, Tuple<byte, byte>> BlueHuffmanTree = new Dictionary<byte, Tuple<byte, byte>>();
+        // Huffman Tree each short
+        public static Dictionary<short, Tuple<short, short>> RedHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+        public static Dictionary<short, Tuple<short, short>> GreenHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+        public static Dictionary<short, Tuple<short, short>> BlueHuffmanTree = new Dictionary<short, Tuple<short, short>>();
 
         private static int RedCompressedBits = 0, GreenCompressedBits = 0, BlueCompressedBits = 0;
         public static int ImageHeight = 0, ImageWidth = 0;
-
+        public static HuffmanNode redHuffmanTreeRoot, greenHuffmanTreeRoot, blueHuffmanTreeRoot;
         // Compress Function
         public static void CompressImage(RGBPixel[,] ImageMatrix)
         {
@@ -82,6 +82,23 @@ namespace ImageEncryptCompress
 
             // calcualte compression ratio
             CalcCompressionRatio();
+
+
+            //Console.WriteLine("RedHuffmanTree");
+            //Console.WriteLine($"redHuffmanTreeRoot:{redHuffmanTreeRoot.Hexa}");
+            //foreach (var node in RedHuffmanTree)
+            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
+
+            //Console.WriteLine("GreenHuffmanTree");
+            //Console.WriteLine($"greenHuffmanTreeRoot:{greenHuffmanTreeRoot.Hexa}");
+            //foreach (var node in GreenHuffmanTree)
+            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
+
+            //Console.WriteLine("BlueHuffmanTree");
+            //Console.WriteLine($"blueHuffmanTreeRoot:{blueHuffmanTreeRoot.Hexa}");
+            //foreach (var node in BlueHuffmanTree)
+            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
+
 
             // Compressed Image
             List<byte>[] CompressedImage = CreateCompressedImage(ImageMatrix);
@@ -169,7 +186,7 @@ namespace ImageEncryptCompress
 
         private static void BuildHuffmanTrees()
         {
-            byte nodeNum = 1;
+            short nodeNum = 260;
             for (int k = 0; k < RedFrequency.Count - 1; k++)
             {
                 HuffmanNode node = new HuffmanNode();
@@ -184,7 +201,7 @@ namespace ImageEncryptCompress
                 //RedTop = node;
                 RedQueue.Enqueue(node);
 
-                RedHuffmanTree.Add(node.Hexa, new Tuple<byte, byte>(node.left.Hexa, node.right.Hexa));
+                RedHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
             }
             //Console.WriteLine("\nRed Huffman Tree");
             //foreach(var node in RedHuffmanTree)
@@ -193,7 +210,7 @@ namespace ImageEncryptCompress
             //}
             //Console.WriteLine("Red tree size: " + RedHuffmanTree.Count);
 
-            nodeNum = 1;
+            nodeNum = 260;
             for (int k = 0; k < GreenFrequency.Count - 1; k++)
             {
                 HuffmanNode node = new HuffmanNode();
@@ -208,10 +225,10 @@ namespace ImageEncryptCompress
                 //GreenTop = node;
                 GreenQueue.Enqueue(node);
 
-                GreenHuffmanTree.Add(node.Hexa, new Tuple<byte, byte>(node.left.Hexa, node.right.Hexa));
+                GreenHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
             }
 
-            nodeNum = 1;
+            nodeNum = 260;
             for (int k = 0; k < BlueFrequency.Count - 1; k++)
             {
                 HuffmanNode node = new HuffmanNode();
@@ -226,20 +243,23 @@ namespace ImageEncryptCompress
                 //BlueTop = node;
                 BlueQueue.Enqueue(node);
 
-                BlueHuffmanTree.Add(node.Hexa, new Tuple<byte, byte>(node.left.Hexa, node.right.Hexa));
+                BlueHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
             }
         }
 
         private static void BinaryCode()
         {
             //Console.WriteLine("\n\nRed Colors Binary Code");
-            GetBinaryCode(RedQueue.Dequeue(), new int[RedFrequency.Count], 0, Color.RED);
+            redHuffmanTreeRoot = RedQueue.Dequeue();
+            GetBinaryCode(redHuffmanTreeRoot, new int[RedFrequency.Count], 0, Color.RED);
 
+            greenHuffmanTreeRoot = GreenQueue.Dequeue();
             //Console.WriteLine("\nGreen Colors Binary Code");
-            GetBinaryCode(GreenQueue.Dequeue(), new int[GreenFrequency.Count], 0, Color.GREEN);
+            GetBinaryCode(greenHuffmanTreeRoot, new int[GreenFrequency.Count], 0, Color.GREEN);
 
+            blueHuffmanTreeRoot = BlueQueue.Dequeue();
             //Console.WriteLine("\nBlue Colors Binary Code");
-            GetBinaryCode(BlueQueue.Dequeue(), new int[GreenFrequency.Count], 0, Color.BLUE);
+            GetBinaryCode(blueHuffmanTreeRoot, new int[BlueFrequency.Count], 0, Color.BLUE);
         }
 
         private static void GetBinaryCode(HuffmanNode root, int[] arr, int top, Color color)
@@ -269,17 +289,17 @@ namespace ImageEncryptCompress
                 if (color == Color.RED)
                 {
                     RedBinaryCode.Add(root.Hexa, bits);
-                    RedCompressedBits += RedFrequency[root.Hexa] * bits.Length;
+                    RedCompressedBits += RedFrequency[(byte)root.Hexa] * bits.Length;
                 }
                 else if (color == Color.GREEN)
                 {
                     GreenBinaryCode.Add(root.Hexa, bits);
-                    GreenCompressedBits += GreenFrequency[root.Hexa] * bits.Length;
+                    GreenCompressedBits += GreenFrequency[(byte)root.Hexa] * bits.Length;
                 }
                 else if (color == Color.BLUE)
                 {
                     BlueBinaryCode.Add(root.Hexa, bits);
-                    BlueCompressedBits += BlueFrequency[root.Hexa] * bits.Length;
+                    BlueCompressedBits += BlueFrequency[(byte)root.Hexa] * bits.Length;
                 }
             }
         }

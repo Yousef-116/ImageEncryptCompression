@@ -8,15 +8,15 @@ namespace ImageEncryptCompress
 {
     internal class Decompressoin
     {
-
+        
         // Huffman Tree each color
-        public static Dictionary<byte, Tuple<byte, byte>> RedHuffmanTree = new Dictionary<byte, Tuple<byte, byte>>();
-        public static Dictionary<byte, Tuple<byte, byte>> GreenHuffmanTree = new Dictionary<byte, Tuple<byte, byte>>();
-        public static Dictionary<byte, Tuple<byte, byte>> BlueHuffmanTree = new Dictionary<byte, Tuple<byte, byte>>();
+        public static Dictionary<short, Tuple<short, short>> RedHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+        public static Dictionary<short, Tuple<short, short>> GreenHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+        public static Dictionary<short, Tuple<short, short>> BlueHuffmanTree = new Dictionary<short, Tuple<short, short>>();
 
         public static StringBuilder redBinaryCode, greenBinaryCode, blueBinaryCode;
         public static int ImageHeight = 0, ImageWidth = 0;
-        public static byte redHuffmanTreeRoot = 0, greenHuffmanTreeRoot = 0, blueHuffmanTreeRoot = 0;
+        public static short redHuffmanTreeRoot = 0, greenHuffmanTreeRoot = 0, blueHuffmanTreeRoot = 0;
 
         public static RGBPixel[,] DecompressImage(string BinaryFilePath)
         {
@@ -30,6 +30,24 @@ namespace ImageEncryptCompress
             RGBPixel[,] ImageMatrix = new RGBPixel[ImageHeight, ImageWidth];
             //Console.WriteLine(ImageHeight + " " + ImageWidth);
 
+
+
+            //Console.WriteLine("RedHuffmanTree");
+            //Console.WriteLine($"redHuffmanTreeRoot:{redHuffmanTreeRoot}");
+            //foreach (var node in RedHuffmanTree)
+            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
+
+            //Console.WriteLine("GreenHuffmanTree");
+            //Console.WriteLine($"greenHuffmanTreeRoot:{greenHuffmanTreeRoot}");
+            //foreach (var node in GreenHuffmanTree)
+            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
+
+            //Console.WriteLine("BlueHuffmanTree");
+            //Console.WriteLine($"blueHuffmanTreeRoot:{blueHuffmanTreeRoot}");
+            //foreach (var node in BlueHuffmanTree)
+            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
+
+
             DecodeBinaryCode(ImageMatrix);
 
             return ImageMatrix;
@@ -38,7 +56,7 @@ namespace ImageEncryptCompress
         private static void DecodeBinaryCode(RGBPixel[,] ImageMatrix)
         {
             char bit;
-            byte currNode = redHuffmanTreeRoot;
+            short currNode = redHuffmanTreeRoot;
             int cnt = 0, i, j;
 
             //Console.WriteLine("\nred Binary Code length:" + redBinaryCode.Length);
@@ -65,7 +83,7 @@ namespace ImageEncryptCompress
                     }
                     j = cnt % ImageWidth;
                     //Console.WriteLine(i + " " + j);
-                    ImageMatrix[i, j].red = currNode;
+                    ImageMatrix[i, j].red = (byte)currNode;
                     //Console.Write(currNode + " ");
                     //Console.WriteLine("here4");
 
@@ -96,7 +114,7 @@ namespace ImageEncryptCompress
                         break;
                     }
                     j = cnt % ImageWidth;
-                    ImageMatrix[i, j].green = currNode;
+                    ImageMatrix[i, j].green = (byte)currNode;
 
                     currNode = greenHuffmanTreeRoot;
                     cnt++;
@@ -125,7 +143,7 @@ namespace ImageEncryptCompress
                         break;
                     }
                     j = cnt % ImageWidth;
-                    ImageMatrix[i, j].blue = currNode;
+                    ImageMatrix[i, j].blue = (byte)currNode;
 
                     currNode = blueHuffmanTreeRoot;
                     cnt++;
