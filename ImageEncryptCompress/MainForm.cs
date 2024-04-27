@@ -77,6 +77,26 @@ namespace ImageEncryptCompress
             return true;
         }
 
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int seedLength = Convert.ToInt32(SeedLength.Text);
+
+            EncryptedImageMatrix = EncryptImage.breakEncrypt(ImageMatrix,seedLength);
+            ImageOperations.DisplayImage(EncryptedImageMatrix, pictureBox2);
+            //Console.WriteLine("Done");
+
+        }
+
         private void encrypt_btn_Click(object sender, EventArgs e)
         {
             String seed = Init_seed.Text;
