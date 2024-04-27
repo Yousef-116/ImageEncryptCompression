@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace ImageEncryptCompress
 {
@@ -62,11 +63,15 @@ namespace ImageEncryptCompress
         private static int RedCompressedBits = 0, GreenCompressedBits = 0, BlueCompressedBits = 0;
         public static int ImageHeight = 0, ImageWidth = 0;
         public static HuffmanNode redHuffmanTreeRoot, greenHuffmanTreeRoot, blueHuffmanTreeRoot;
+
+        public static bool isEncrypted = false;
+
         // Compress Function
         public static void CompressImage(RGBPixel[,] ImageMatrix)
         {
             ImageHeight = ImageOperations.GetHeight(ImageMatrix);  // rows
             ImageWidth = ImageOperations.GetWidth(ImageMatrix);   // columns   
+            //isEncrypted = isencrypted;
 
             // Count Frequencies for each color
             CalcFrequency(ImageMatrix);
@@ -369,7 +374,7 @@ namespace ImageEncryptCompress
             return CompressedImage;
         }
 
-        private static void AddBits(List<byte> channel, string BinaryCode, ref int StartIndex)
+        public static void AddBits(List<byte> channel, string BinaryCode, ref int StartIndex)
         {
             foreach(char c in BinaryCode)
             {

@@ -18,6 +18,10 @@ namespace ImageEncryptCompress
         public static int ImageHeight = 0, ImageWidth = 0;
         public static short redHuffmanTreeRoot = 0, greenHuffmanTreeRoot = 0, blueHuffmanTreeRoot = 0;
 
+        public static StringBuilder seedString;
+        public static short TapPosition;
+        public static bool isEncrypted;
+
         public static RGBPixel[,] DecompressImage(string BinaryFilePath)
         {
 

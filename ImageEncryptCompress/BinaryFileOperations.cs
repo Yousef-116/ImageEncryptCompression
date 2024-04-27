@@ -21,11 +21,21 @@ namespace ImageEncryptCompress
             {
                 saveFilePath = saveFileDialog1.FileName;
             }
+            else
+            {
+                return;
+            } 
 
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(saveFilePath, FileMode.Create)))
             {
                 /*
+                 * isEncrypted
+                 * 
+                 * Initial Seed length
+                 * Initial Seed
+                 * Tap position
+                 * 
                  * Height
                  * Width
                  * 
@@ -44,6 +54,23 @@ namespace ImageEncryptCompress
                  * Blue Binary Code
                  */
 
+                #region Seed
+                if (Compression.isEncrypted == true)
+                {
+                    writer.Write((byte)1);
+
+                    List<byte> seedList = EncryptImage.GetBinarySeed();
+                    writer.Write(seedList.Count);
+
+                    foreach (byte b in seedList)
+                    {
+                        //Console.Write(b + " ");
+                        writer.Write(b);
+                    }
+
+                    writer.Write(EncryptImage.TapPosition);
+                }
+                #endregion
 
                 writer.Write(Compression.ImageHeight);
                 writer.Write(Compression.ImageWidth);
@@ -106,10 +133,33 @@ namespace ImageEncryptCompress
                 // Open the binary file for reading
                 using (BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open)))
                 {
+                    byte byteValue = 0;
+
+                    //isEncrypted
+                    Decompressoin.isEncrypted = reader.ReadBoolean();
+                    if(Decompressoin.isEncrypted == true)
+                    {
+                        int seedLength = reader.ReadInt32();
+                        //Console.WriteLine(listLength);
+                        byteValue = 0;
+
+                        Decompressoin.seedString = new StringBuilder();
+                        while (seedLength-- > 0)
+                        {
+                            byteValue = reader.ReadByte();
+                            //Console.Write(byteValue + " ");
+                            //Console.WriteLine(Convert.ToString(byteValue, 2).PadLeft(8, '0'));
+                            Decompressoin.seedString.Append(Convert.ToString(byteValue, 2).PadLeft(8, '0'));
+                        }
+                        //Console.WriteLine(seedString);
+
+                        Decompressoin.TapPosition = reader.ReadInt16();
+                    }
+
+
                     // Height, Width
                     Decompressoin.ImageHeight = reader.ReadInt32();
                     Decompressoin.ImageWidth = reader.ReadInt32();
-
 
                     #region HuffmanTree
 
@@ -163,7 +213,6 @@ namespace ImageEncryptCompress
 
                     int listLength = reader.ReadInt32();
                     //Console.WriteLine(listLength);
-                    byte byteValue = 0;
 
                     while (listLength-- > 0)
                     {

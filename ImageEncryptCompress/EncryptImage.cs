@@ -8,10 +8,14 @@ namespace ImageEncryptCompress
 {
     internal class EncryptImage
     {
-        public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, String seed , int  Tap_position )
+        private static string Seed;
+        public static short TapPosition;
+        public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, String seed , int Tap_position )
         {
             int Height = ImageMatrix.GetLength(0);
             int Width = ImageMatrix.GetLength(1);
+            Seed = seed.ToString();
+            TapPosition = (short)Tap_position;
 
             RGBPixelD Item1D;
             RGBPixel Item2;
@@ -55,7 +59,6 @@ namespace ImageEncryptCompress
             //    Console.WriteLine("index "+i+" red : "+ImageMatrix[i, 0].red + " Green : " + ImageMatrix[i, 0].green + " Blue : "+ ImageMatrix[i, 0].blue); 
             //}
 
-
             return EncryptedImageMatrix;
         }
 
@@ -88,5 +91,15 @@ namespace ImageEncryptCompress
 
 
         }
+
+        public static List<byte> GetBinarySeed()
+        {
+            List<byte> seedList; seedList = new List<byte>();
+            int startIndex = 0;
+            Compression.AddBits(seedList, Seed, ref startIndex);
+
+            return seedList;
+        }
+
     }
 }
