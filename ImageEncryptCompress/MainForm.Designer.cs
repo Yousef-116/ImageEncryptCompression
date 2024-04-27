@@ -47,6 +47,9 @@ namespace ImageEncryptCompress
             this.IsAlphanumeric = new System.Windows.Forms.CheckBox();
             this.BinaryFileCheckBox = new System.Windows.Forms.CheckBox();
             this.compress_btn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.SeedLength = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
@@ -110,7 +113,7 @@ namespace ImageEncryptCompress
             // encrypt_btn
             // 
             this.encrypt_btn.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.encrypt_btn.Location = new System.Drawing.Point(593, 751);
+            this.encrypt_btn.Location = new System.Drawing.Point(460, 748);
             this.encrypt_btn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.encrypt_btn.Name = "encrypt_btn";
             this.encrypt_btn.Size = new System.Drawing.Size(225, 111);
@@ -123,7 +126,7 @@ namespace ImageEncryptCompress
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(844, 753);
+            this.label3.Location = new System.Drawing.Point(711, 749);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(137, 24);
@@ -134,7 +137,7 @@ namespace ImageEncryptCompress
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(844, 794);
+            this.label4.Location = new System.Drawing.Point(711, 790);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(103, 24);
@@ -188,7 +191,7 @@ namespace ImageEncryptCompress
             // Init_seed
             // 
             this.Init_seed.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Init_seed.Location = new System.Drawing.Point(985, 791);
+            this.Init_seed.Location = new System.Drawing.Point(853, 788);
             this.Init_seed.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Init_seed.Name = "Init_seed";
             this.Init_seed.Size = new System.Drawing.Size(188, 31);
@@ -221,7 +224,7 @@ namespace ImageEncryptCompress
             // Tap
             // 
             this.Tap.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Tap.Location = new System.Drawing.Point(985, 750);
+            this.Tap.Location = new System.Drawing.Point(853, 746);
             this.Tap.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Tap.Name = "Tap";
             this.Tap.Size = new System.Drawing.Size(61, 31);
@@ -232,7 +235,7 @@ namespace ImageEncryptCompress
             // 
             this.IsAlphanumeric.AutoSize = true;
             this.IsAlphanumeric.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.152543F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IsAlphanumeric.Location = new System.Drawing.Point(848, 834);
+            this.IsAlphanumeric.Location = new System.Drawing.Point(716, 830);
             this.IsAlphanumeric.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.IsAlphanumeric.Name = "IsAlphanumeric";
             this.IsAlphanumeric.Size = new System.Drawing.Size(154, 28);
@@ -245,6 +248,7 @@ namespace ImageEncryptCompress
             this.BinaryFileCheckBox.AutoSize = true;
             this.BinaryFileCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BinaryFileCheckBox.Location = new System.Drawing.Point(282, 830);
+            this.BinaryFileCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BinaryFileCheckBox.Name = "BinaryFileCheckBox";
             this.BinaryFileCheckBox.Size = new System.Drawing.Size(129, 29);
             this.BinaryFileCheckBox.TabIndex = 19;
@@ -254,20 +258,56 @@ namespace ImageEncryptCompress
             // compress_btn
             // 
             this.compress_btn.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.compress_btn.Location = new System.Drawing.Point(1343, 748);
+            this.compress_btn.Location = new System.Drawing.Point(1425, 741);
             this.compress_btn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.compress_btn.Name = "compress_btn";
-            this.compress_btn.Size = new System.Drawing.Size(225, 111);
+            this.compress_btn.Size = new System.Drawing.Size(225, 117);
             this.compress_btn.TabIndex = 5;
             this.compress_btn.Text = "Compress";
             this.compress_btn.UseVisualStyleBackColor = true;
             this.compress_btn.Click += new System.EventHandler(this.compress_btn_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(1136, 788);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(205, 70);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "Break Encrypt";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // SeedLength
+            // 
+            this.SeedLength.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SeedLength.Location = new System.Drawing.Point(1276, 741);
+            this.SeedLength.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SeedLength.Name = "SeedLength";
+            this.SeedLength.Size = new System.Drawing.Size(61, 31);
+            this.SeedLength.TabIndex = 22;
+            this.SeedLength.Text = "0";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(1134, 744);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(136, 24);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "Seed Length";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1663, 876);
+            this.Controls.Add(this.SeedLength);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.BinaryFileCheckBox);
             this.Controls.Add(this.IsAlphanumeric);
             this.Controls.Add(this.Tap);
@@ -321,6 +361,9 @@ namespace ImageEncryptCompress
         private System.Windows.Forms.CheckBox IsAlphanumeric;
         private System.Windows.Forms.CheckBox BinaryFileCheckBox;
         private System.Windows.Forms.Button compress_btn;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox SeedLength;
+        private System.Windows.Forms.Label label7;
     }
 }
 

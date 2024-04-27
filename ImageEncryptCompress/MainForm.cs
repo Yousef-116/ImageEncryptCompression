@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ImageEncryptCompress
 {
@@ -17,6 +18,7 @@ namespace ImageEncryptCompress
 
         RGBPixel[,] ImageMatrix, EncryptedImageMatrix;
         bool imageOpened = false;
+        bool isEncrebted = false;
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
@@ -41,6 +43,15 @@ namespace ImageEncryptCompress
                     string OpenedFilePath = openFileDialog1.FileName;
                     ImageMatrix = Decompressoin.DecompressImage(OpenedFilePath);
                     imageOpened = true;
+                    if (Decompressoin.isEncrypted == true)
+                    {
+                        int count = Decompressoin.seedString.Length - Decompressoin.seedLength;
+                        Init_seed.Text = Decompressoin.seedString.ToString().Remove(Decompressoin.seedLength, count);
+                        Tap.Text = Decompressoin.TapPosition.ToString();
+
+                        RGBPixel[,] DecryptedImageMatrix = EncryptImage.Encrypt(ImageMatrix, Init_seed.Text, Decompressoin.TapPosition);
+                        ImageOperations.DisplayImage(DecryptedImageMatrix, pictureBox2);
+                    }
                 }
             }
 
@@ -59,7 +70,15 @@ namespace ImageEncryptCompress
                 MessageBox.Show("You must open an image first");
                 return;
             }
-            Compression.CompressImage(ImageMatrix);
+
+            if (isEncrebted == false)
+            {
+                Compression.CompressImage(ImageMatrix, false);
+            }
+            else
+            {
+                Compression.CompressImage(EncryptedImageMatrix, true);
+            }
         }
 
         private bool validation(String seed, int Tap_position)
@@ -75,6 +94,16 @@ namespace ImageEncryptCompress
                 return false;
             }
             return true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int seedLength = Convert.ToInt32(SeedLength.Text);
+
+            EncryptedImageMatrix = EncryptImage.breakEncrypt(ImageMatrix,seedLength);
+            ImageOperations.DisplayImage(EncryptedImageMatrix, pictureBox2);
+            //Console.WriteLine("Done");
+
         }
 
         private void encrypt_btn_Click(object sender, EventArgs e)
@@ -100,6 +129,7 @@ namespace ImageEncryptCompress
 
             EncryptedImageMatrix = EncryptImage.Encrypt(ImageMatrix, seed , Tap_position );
             ImageOperations.DisplayImage(EncryptedImageMatrix, pictureBox2);
+            isEncrebted = true;
 
             // save image //
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -113,5 +143,6 @@ namespace ImageEncryptCompress
                 ImageOperations.SaveImage(bitmap, saveFilePath);
             }
         }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ImageEncryptCompress
 {
@@ -19,6 +20,7 @@ namespace ImageEncryptCompress
         public static short redHuffmanTreeRoot = 0, greenHuffmanTreeRoot = 0, blueHuffmanTreeRoot = 0;
 
         public static StringBuilder seedString;
+        public static ushort seedLength;
         public static short TapPosition;
         public static bool isEncrypted;
 
@@ -155,5 +157,6 @@ namespace ImageEncryptCompress
             }
 
         }
+ 
     }
 }

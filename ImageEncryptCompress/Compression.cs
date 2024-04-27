@@ -67,11 +67,11 @@ namespace ImageEncryptCompress
         public static bool isEncrypted = false;
 
         // Compress Function
-        public static void CompressImage(RGBPixel[,] ImageMatrix)
+        public static void CompressImage(RGBPixel[,] ImageMatrix, bool isencrypted)
         {
             ImageHeight = ImageOperations.GetHeight(ImageMatrix);  // rows
             ImageWidth = ImageOperations.GetWidth(ImageMatrix);   // columns   
-            //isEncrypted = isencrypted;
+            isEncrypted = isencrypted;
 
             // Count Frequencies for each color
             CalcFrequency(ImageMatrix);

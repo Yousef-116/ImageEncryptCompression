@@ -33,6 +33,7 @@ namespace ImageEncryptCompress
                  * isEncrypted
                  * 
                  * Initial Seed length
+                 * Initial SeedList length
                  * Initial Seed
                  * Tap position
                  * 
@@ -58,6 +59,7 @@ namespace ImageEncryptCompress
                 if (Compression.isEncrypted == true)
                 {
                     writer.Write((byte)1);
+                    writer.Write((ushort)EncryptImage.Seed.Length);
 
                     List<byte> seedList = EncryptImage.GetBinarySeed();
                     writer.Write(seedList.Count);
@@ -139,12 +141,13 @@ namespace ImageEncryptCompress
                     Decompressoin.isEncrypted = reader.ReadBoolean();
                     if(Decompressoin.isEncrypted == true)
                     {
-                        int seedLength = reader.ReadInt32();
+                        Decompressoin.seedLength = reader.ReadUInt16();
+                        int seedListLength = reader.ReadInt32();
                         //Console.WriteLine(listLength);
                         byteValue = 0;
 
                         Decompressoin.seedString = new StringBuilder();
-                        while (seedLength-- > 0)
+                        while (seedListLength-- > 0)
                         {
                             byteValue = reader.ReadByte();
                             //Console.Write(byteValue + " ");
