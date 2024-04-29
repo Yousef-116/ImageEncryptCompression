@@ -72,6 +72,10 @@ namespace ImageEncryptCompress
 
                     writer.Write(EncryptImage.TapPosition);
                 }
+                else
+                {
+                    writer.Write((byte)0);
+                }
                 #endregion
 
                 writer.Write(Compression.ImageHeight);

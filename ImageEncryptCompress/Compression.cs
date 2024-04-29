@@ -290,9 +290,9 @@ namespace ImageEncryptCompress
                     bits +=  (char)(arr[i] + '0');
                 }
 
-                //Console.WriteLine(root.Hexa + ":" +  bits);
                 if (color == Color.RED)
                 {
+                    //Console.WriteLine(root.Hexa + ":" + bits);
                     RedBinaryCode.Add(root.Hexa, bits);
                     RedCompressedBits += RedFrequency[(byte)root.Hexa] * bits.Length;
                 }
@@ -343,6 +343,8 @@ namespace ImageEncryptCompress
             Console.WriteLine($"\n\nOriginal size = {original_size} bits = {original_size / 8} bytes = {original_size / (8 * 1024)} KB");
             Console.WriteLine($"Compressed size = {compressed_size} bits = {compressed_size / 8} bytes = {compressed_size / (8 * 1024)} KB");
             Console.WriteLine($"Compression ratio = {(compressed_size / original_size) * 100}%");
+
+            Console.WriteLine($"\nTree Size: {RedHuffmanTree.Count * 6} bytes = {RedHuffmanTree.Count * 6 / 1024.0} KB");
         }
 
         private static List<byte>[] CreateCompressedImage(RGBPixel[,] ImageMatrix)
