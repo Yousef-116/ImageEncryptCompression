@@ -48,8 +48,8 @@ namespace ImageEncryptCompress
                         int count = Decompressoin.seedString.Length - Decompressoin.seedLength;
                         Init_seed.Text = Decompressoin.seedString.ToString().Remove(Decompressoin.seedLength, count);
                         Tap.Text = Decompressoin.TapPosition.ToString();
-
-                        RGBPixel[,] DecryptedImageMatrix = EncryptImage.Encrypt(ImageMatrix, Init_seed.Text, Decompressoin.TapPosition);
+                        int intseed = Convert.ToInt32(Init_seed.Text,2);
+                        RGBPixel[,] DecryptedImageMatrix = EncryptImage.Encrypt(ImageMatrix, intseed,Init_seed.Text.Length, Decompressoin.TapPosition);
                         ImageOperations.DisplayImage(DecryptedImageMatrix, pictureBox2);
                     }
                 }
@@ -126,8 +126,8 @@ namespace ImageEncryptCompress
             {
                 return;
             }
-
-            EncryptedImageMatrix = EncryptImage.Encrypt(ImageMatrix, seed , Tap_position );
+            int intseed = Convert.ToInt32(seed,2);
+            EncryptedImageMatrix = EncryptImage.Encrypt(ImageMatrix, intseed ,seed.Length, Tap_position );
             ImageOperations.DisplayImage(EncryptedImageMatrix, pictureBox2);
             isEncrebted = true;
 
