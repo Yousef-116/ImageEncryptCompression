@@ -13,67 +13,67 @@ namespace ImageEncryptCompress
         public static string Seed;
         public static ushort TapPosition;
 
-        public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, int seedint, int SeedLength ,int Tap_position)
-        {
-            // Stopwatch sw = Stopwatch.StartNew();
-            //Console.WriteLine("string int encrypt");
-            int Height = ImageMatrix.GetLength(0);
-            int Width = ImageMatrix.GetLength(1);
-            ushort TapPosition = (ushort)Tap_position;
+        //public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, int seedint, int SeedLength ,int Tap_position)
+        //{
+        //    Stopwatch sw = Stopwatch.StartNew();
+        //    //Console.WriteLine("string int encrypt");
+        //    int Height = ImageMatrix.GetLength(0);
+        //    int Width = ImageMatrix.GetLength(1);
+        //    ushort TapPosition = (ushort)Tap_position;
 
-            RGBPixelD Item1D;
-            RGBPixel Item2;
-            byte /*keyInt,*/keyString;
-            int keyInt;
-            //int keynum = 1;
-            RGBPixel[,] EncryptedImageMatrix = new RGBPixel[Height, Width];
+        //    RGBPixelD Item1D;
+        //    RGBPixel Item2;
+        //    byte /*keyInt,*/keyString;
+        //    int keyInt;
+        //    //int keynum = 1;
+        //    RGBPixel[,] EncryptedImageMatrix = new RGBPixel[Height, Width];
             
 
 
-            for (int i = 0; i < Height; i++)
-            {
-                for (int j = 0; j < Width; j++)
-                {
-                    Item2 = ImageMatrix[i, j];
-                    //keyInt = seed;
+        //    for (int i = 0; i < Height; i++)
+        //    {
+        //        for (int j = 0; j < Width; j++)
+        //        {
+        //            Item2 = ImageMatrix[i, j];
+        //            //keyInt = seed;
                     
-                    //Console.WriteLine("Binary seed: " + seedString+ " intseed: "+seedint);
-                    keyInt = generateNew8Bits(ref seedint, SeedLength, Tap_position);
-                    //keyString = generateNew8Bits(ref seedString, Tap_position);
-                    //Console.WriteLine(keynum+" = correct Key: " + keyString + " your Intkey: " + keyInt);
-                    //keynum++;
-                    Item1D.red = keyInt ^ Item2.red;
+        //            //Console.WriteLine("Binary seed: " + seedString+ " intseed: "+seedint);
+        //            keyInt = generateNew8Bits(ref seedint, SeedLength, Tap_position);
+        //            //keyString = generateNew8Bits(ref seedString, Tap_position);
+        //            //Console.WriteLine(keynum+" = correct Key: " + keyString + " your Intkey: " + keyInt);
+        //            //keynum++;
+        //            Item1D.red = keyInt ^ Item2.red;
 
 
-                    keyInt = generateNew8Bits(ref seedint, SeedLength, Tap_position);
-                    //keyString = generateNew8Bits(ref seedString, Tap_position);
-                    Item1D.green = keyInt ^ Item2.green;
+        //            keyInt = generateNew8Bits(ref seedint, SeedLength, Tap_position);
+        //            //keyString = generateNew8Bits(ref seedString, Tap_position);
+        //            Item1D.green = keyInt ^ Item2.green;
 
-                  //  keynum++;
+        //          //  keynum++;
 
-                    keyInt = generateNew8Bits(ref seedint, SeedLength, Tap_position);
-                    //keyString = generateNew8Bits(ref seedString, Tap_position);
-                    Item1D.blue = keyInt ^ Item2.blue;
+        //            keyInt = generateNew8Bits(ref seedint, SeedLength, Tap_position);
+        //            //keyString = generateNew8Bits(ref seedString, Tap_position);
+        //            Item1D.blue = keyInt ^ Item2.blue;
 
-                   // keynum++;
+        //           // keynum++;
 
-                    EncryptedImageMatrix[i, j].red = (byte)Item1D.red;
-                    EncryptedImageMatrix[i, j].green = (byte)Item1D.green;
-                    EncryptedImageMatrix[i, j].blue = (byte)Item1D.blue;
-                    //if (keynum > 20)
-                    //{
-                    //    break;
-                    //}
-                }
-                //if(keynum>20)
-                //    break;
-            }
+        //            EncryptedImageMatrix[i, j].red = (byte)Item1D.red;
+        //            EncryptedImageMatrix[i, j].green = (byte)Item1D.green;
+        //            EncryptedImageMatrix[i, j].blue = (byte)Item1D.blue;
+        //            //if (keynum > 20)
+        //            //{
+        //            //    break;
+        //            //}
+        //        }
+        //        //if(keynum>20)
+        //        //    break;
+        //    }
 
-            //sw.Stop();
-            // Console.WriteLine("time is ms : " + sw.ElapsedMilliseconds);
+        //    sw.Stop();
+        //    Console.WriteLine("time is ms : " + sw.ElapsedMilliseconds);
 
-            return EncryptedImageMatrix;
-        }
+        //    return EncryptedImageMatrix;
+        //}
 
 
         public static int generateNew8Bits(ref int seed, int seedLength, int Tap_position)
@@ -109,13 +109,13 @@ namespace ImageEncryptCompress
 
 
 
-        public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, String seed, int Tap_position)
+        public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, int integerSeed, int SeedLength, int Tap_position)
         {
-            Stopwatch sw = Stopwatch.StartNew();
+            //Stopwatch sw = Stopwatch.StartNew();
 
             int Height = ImageMatrix.GetLength(0);
             int Width = ImageMatrix.GetLength(1);
-            Seed = seed.ToString();
+            //Seed = seed.ToString();
             TapPosition = (ushort)Tap_position;
 
             RGBPixelD Item1D;
@@ -131,7 +131,7 @@ namespace ImageEncryptCompress
             //    Console.WriteLine("index " + i + " red : " + ImageMatrix[i, 0].red + " Green : " + ImageMatrix[i, 0].green + " Blue : " + ImageMatrix[i, 0].blue);
             //}
 
-            int keynum = 1;
+            //int keynum = 1;
             for (int i = 0; i < Height; i++)
             {
                 for (int j = 0; j < Width; j++)
@@ -139,15 +139,15 @@ namespace ImageEncryptCompress
 
                     Item2 = ImageMatrix[i, j];
 
-                    key = generateNew8Bits(ref seed, Tap_position);
+                    key = generateNew8Bits(ref integerSeed,SeedLength, Tap_position);
 
                     Item1D.red = key ^ Item2.red;
 
-                    key = generateNew8Bits(ref seed, Tap_position);
+                    key = generateNew8Bits(ref integerSeed,SeedLength, Tap_position);
 
                     Item1D.green = key ^ Item2.green;
 
-                    key = generateNew8Bits(ref seed, Tap_position);
+                    key = generateNew8Bits(ref integerSeed, SeedLength, Tap_position);
 
                     Item1D.blue = key ^ Item2.blue;
 
@@ -202,47 +202,47 @@ namespace ImageEncryptCompress
             //    Console.WriteLine("Reddegree : " + greenitem.Key + " count : " + greenitem.Value);
             //}
 
-            sw.Stop();
+            //sw.Stop();
 
-            Console.WriteLine("time is ms : " + sw.ElapsedMilliseconds);
+            //Console.WriteLine("time is ms : " + sw.ElapsedMilliseconds);
 
             return EncryptedImageMatrix;
         }
 
-        public static Byte generateNew8Bits(ref String seed, int Tap_position)
-        {
-            int tapbit, lastbit, newbit;
-            StringBuilder keybits = new StringBuilder();
+        //public static Byte generateNew8Bits(ref String seed, int Tap_position)
+        //{
+        //    int tapbit, lastbit, newbit;
+        //    StringBuilder keybits = new StringBuilder();
 
-            //Console.WriteLine("seed :" + seed);
-            for (int i = 0; i < 8; i++)
-            {
+        //    //Console.WriteLine("seed :" + seed);
+        //    for (int i = 0; i < 8; i++)
+        //    {
 
-                tapbit = seed[seed.Length - Tap_position - 1] - '0';
-                lastbit = seed[0] - '0';
+        //        tapbit = seed[seed.Length - Tap_position - 1] - '0';
+        //        lastbit = seed[0] - '0';
 
-                newbit = tapbit ^ lastbit;
+        //        newbit = tapbit ^ lastbit;
 
-                // Console.WriteLine("tap : " + tapbit + " last bit: " + lastbit + " newbit: " + newbit);
+        //        // Console.WriteLine("tap : " + tapbit + " last bit: " + lastbit + " newbit: " + newbit);
 
-                keybits.Append(newbit.ToString());
+        //        keybits.Append(newbit.ToString());
 
-                seed = seed.Substring(1) + newbit.ToString();
-                //seed.Remove(0, 1);
-                //seed.Append(newbit.ToString());
+        //        seed = seed.Substring(1) + newbit.ToString();
+        //        //seed.Remove(0, 1);
+        //        //seed.Append(newbit.ToString());
 
-                //   Console.WriteLine("result "+i +"  = "+seed);
-            }
+        //        //   Console.WriteLine("result "+i +"  = "+seed);
+        //    }
 
-            Byte key = Convert.ToByte(keybits.ToString(), 2);
-            //Console.WriteLine("key2 : " + key);
-
-
-
-            return key;
+        //    Byte key = Convert.ToByte(keybits.ToString(), 2);
+        //    //Console.WriteLine("key2 : " + key);
 
 
-        }
+
+        //    return key;
+
+
+        //}
 
         public static RGBPixel[,] breakEncrypt(RGBPixel[,] ImageMatrix, int SeedLength)
         {
@@ -267,7 +267,8 @@ namespace ImageEncryptCompress
                     string seedBinary = Convert.ToString(seed, 2).PadLeft(SeedLength, '0');
                     //Console.WriteLine("TapPosition : " + tapPosition + " | Seed : " + binaryRepresentation);
                     int intSeed = Convert.ToInt32(seedBinary, 2);
-                    RGBPixel[,] breakEncryptImageMatrix = Encrypt(TryImageMatrix, intSeed,SeedLength, tapPosition);
+                    RGBPixel[,] breakEncryptImageMatrix = Encrypt_for_break(TryImageMatrix, intSeed,SeedLength, tapPosition);
+                    //RGBPixel[,] breakEncryptImageMatrix = Encrypt(TryImageMatrix,seedBinary, tapPosition);
 
                     Dictionary<byte, int> redFrequencyCounts = new Dictionary<byte, int>();
                     Dictionary<byte, int> greenFrequencyCounts = new Dictionary<byte, int>();
@@ -318,10 +319,6 @@ namespace ImageEncryptCompress
                         optimalTapPosition = tapPosition;
                         optimalSeed = seedBinary;
                     }
-
-
-
-
                 }
             }
 
@@ -329,13 +326,66 @@ namespace ImageEncryptCompress
             Console.WriteLine("break time is ms : " + sw.ElapsedMilliseconds);
             
             Console.WriteLine("predicate Seed : " + optimalSeed + " predicate Tap Position " + optimalTapPosition);
-            int intseed = Convert.ToInt32(optimalSeed);
+            int integerseed = Convert.ToInt32(optimalSeed,2);
 
-            Console.WriteLine("intseed : " +intseed+" seed.length : "+ optimalSeed.Length + " tap_position : " + optimalTapPosition);
+            //Console.WriteLine("intseed : " +integerseed+" seed.length : "+ optimalSeed.Length + " tap_position : " + optimalTapPosition);
 
-            return Encrypt(ImageMatrix, intseed,optimalSeed.Length, optimalTapPosition);
+            return Encrypt(ImageMatrix,integerseed,SeedLength, optimalTapPosition);
 
         }
+
+        public static RGBPixel[,] Encrypt_for_break(RGBPixel[,] ImageMatrix, int integerSeed, int SeedLength, int Tap_position)
+        {
+            //Stopwatch sw = Stopwatch.StartNew();
+
+            int Height = ImageMatrix.GetLength(0);
+            int Width = ImageMatrix.GetLength(1);
+            //Seed = seed.ToString();
+            TapPosition = (ushort)Tap_position;
+
+            RGBPixelD Item1D;
+            RGBPixel Item2;
+            int key;
+            RGBPixel[,] EncryptedImageMatrix = new RGBPixel[Height, Width];
+            //int count = 0;
+            for (int i = 0; i < Height/2; i++)
+            {
+                for (int j = 0; j < Width; j++)
+                {
+
+                    Item2 = ImageMatrix[i, j];
+
+                    key = generateNew8Bits(ref integerSeed, SeedLength, Tap_position);
+
+                    Item1D.red = key ^ Item2.red;
+
+                    key = generateNew8Bits(ref integerSeed, SeedLength, Tap_position);
+
+                    //Item1D.green = key ^ Item2.green;
+
+                    key = generateNew8Bits(ref integerSeed, SeedLength, Tap_position);
+
+                    //Item1D.blue = key ^ Item2.blue;
+                    //if (EncryptedImageMatrix[i, j].red == (byte)Item1D.red)
+                    //{
+                    //    count++;
+                    //}
+                    //else
+                    //    count = -1;
+                    EncryptedImageMatrix[i, j].red = (byte)Item1D.red;
+                    //EncryptedImageMatrix[i, j].green = (byte)Item1D.green;
+                    //EncryptedImageMatrix[i, j].blue = (byte)Item1D.blue;
+                    //if (count >= 5)
+                    //{
+                    //    Console.WriteLine("hear");
+                    //    break;
+                    //}
+                }
+            }
+
+            return EncryptedImageMatrix;
+        }
+
 
         public static List<byte> GetBinarySeed()
         {
