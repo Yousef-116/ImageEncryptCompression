@@ -101,9 +101,21 @@ namespace ImageEncryptCompress
             int seedLength = Convert.ToInt32(SeedLength.Text);
 
             EncryptedImageMatrix = EncryptImage.breakEncrypt(ImageMatrix,seedLength);
+            Init_seed.Text = EncryptImage.Seed;
+            Tap.Text = EncryptImage.TapPosition.ToString();
             ImageOperations.DisplayImage(EncryptedImageMatrix, pictureBox2);
             //Console.WriteLine("Done");
+            // save image //
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Bitmap Image|*.bmp";
+            saveFileDialog1.Title = "Save an Image File";
 
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string saveFilePath = saveFileDialog1.FileName;
+                Bitmap bitmap = ImageOperations.ConvertToBitmap(EncryptedImageMatrix);
+                ImageOperations.SaveImage(bitmap, saveFilePath);
+            }
         }
 
         private void encrypt_btn_Click(object sender, EventArgs e)
