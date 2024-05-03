@@ -47,7 +47,7 @@ namespace ImageEncryptCompress
             this.IsAlphanumeric = new System.Windows.Forms.CheckBox();
             this.BinaryFileCheckBox = new System.Windows.Forms.CheckBox();
             this.compress_btn = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.breakEncrypt_btn = new System.Windows.Forms.Button();
             this.SeedLength = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -267,17 +267,17 @@ namespace ImageEncryptCompress
             this.compress_btn.UseVisualStyleBackColor = true;
             this.compress_btn.Click += new System.EventHandler(this.compress_btn_Click);
             // 
-            // button1
+            // breakEncrypt_btn
             // 
-            this.button1.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(1136, 788);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(205, 70);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Break Encrypt";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.breakEncrypt_btn.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.breakEncrypt_btn.Location = new System.Drawing.Point(1136, 788);
+            this.breakEncrypt_btn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.breakEncrypt_btn.Name = "breakEncrypt_btn";
+            this.breakEncrypt_btn.Size = new System.Drawing.Size(205, 70);
+            this.breakEncrypt_btn.TabIndex = 20;
+            this.breakEncrypt_btn.Text = "Break Encrypt";
+            this.breakEncrypt_btn.UseVisualStyleBackColor = true;
+            this.breakEncrypt_btn.Click += new System.EventHandler(this.breakEncrypt_btn_Click);
             // 
             // SeedLength
             // 
@@ -307,7 +307,7 @@ namespace ImageEncryptCompress
             this.ClientSize = new System.Drawing.Size(1663, 876);
             this.Controls.Add(this.SeedLength);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.breakEncrypt_btn);
             this.Controls.Add(this.BinaryFileCheckBox);
             this.Controls.Add(this.IsAlphanumeric);
             this.Controls.Add(this.Tap);
@@ -325,7 +325,6 @@ namespace ImageEncryptCompress
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOpen);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -362,7 +361,7 @@ namespace ImageEncryptCompress
         private System.Windows.Forms.CheckBox IsAlphanumeric;
         private System.Windows.Forms.CheckBox BinaryFileCheckBox;
         private System.Windows.Forms.Button compress_btn;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button breakEncrypt_btn;
         private System.Windows.Forms.TextBox SeedLength;
         private System.Windows.Forms.Label label7;
     }

@@ -41,34 +41,36 @@ namespace ImageEncryptCompress
 
         // Image Data Structures 
         // Frequency Dictionaries
-        public static Dictionary<byte, int> RedFrequency = new Dictionary<byte, int>();
-        public static Dictionary<byte, int> GreenFrequency = new Dictionary<byte, int>();
-        public static Dictionary<byte, int> BlueFrequency = new Dictionary<byte, int>();
+        public static Dictionary<byte, int> RedFrequency;
+        public static Dictionary<byte, int> GreenFrequency;
+        public static Dictionary<byte, int> BlueFrequency;
 
         // Priority Queue for each color
-        public static PriorityQueue<HuffmanNode> RedQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
-        public static PriorityQueue<HuffmanNode> GreenQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
-        public static PriorityQueue<HuffmanNode> BlueQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
+        public static PriorityQueue<HuffmanNode> RedQueue;
+        public static PriorityQueue<HuffmanNode> GreenQueue;
+        public static PriorityQueue<HuffmanNode> BlueQueue;
 
         // Compressed map for each color
-        public static Dictionary<int, string> RedBinaryCode = new Dictionary<int, string>();
-        public static Dictionary<int, string> GreenBinaryCode = new Dictionary<int, string>();
-        public static Dictionary<int, string> BlueBinaryCode = new Dictionary<int, string>();
+        public static Dictionary<int, string> RedBinaryCode;
+        public static Dictionary<int, string> GreenBinaryCode;
+        public static Dictionary<int, string> BlueBinaryCode;
 
         // Huffman Tree each short
-        public static Dictionary<short, Tuple<short, short>> RedHuffmanTree = new Dictionary<short, Tuple<short, short>>();
-        public static Dictionary<short, Tuple<short, short>> GreenHuffmanTree = new Dictionary<short, Tuple<short, short>>();
-        public static Dictionary<short, Tuple<short, short>> BlueHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+        public static Dictionary<short, Tuple<short, short>> RedHuffmanTree;
+        public static Dictionary<short, Tuple<short, short>> GreenHuffmanTree;
+        public static Dictionary<short, Tuple<short, short>> BlueHuffmanTree;
 
-        private static int RedCompressedBits = 0, GreenCompressedBits = 0, BlueCompressedBits = 0;
-        public static int ImageHeight = 0, ImageWidth = 0;
+        private static int RedCompressedBits, GreenCompressedBits, BlueCompressedBits;
+        public static int ImageHeight, ImageWidth;
         public static HuffmanNode redHuffmanTreeRoot, greenHuffmanTreeRoot, blueHuffmanTreeRoot;
 
-        public static bool isEncrypted = false;
+        public static bool isEncrypted;
 
         // Compress Function
         public static void CompressImage(RGBPixel[,] ImageMatrix, bool isencrypted)
         {
+            Intialize();
+
             ImageHeight = ImageOperations.GetHeight(ImageMatrix);  // rows
             ImageWidth = ImageOperations.GetWidth(ImageMatrix);   // columns   
             isEncrypted = isencrypted;
@@ -85,31 +87,44 @@ namespace ImageEncryptCompress
             // Binary codes
             BinaryCode();
 
-            // calcualte compression ratio
-            CalcCompressionRatio();
-
-
-            //Console.WriteLine("RedHuffmanTree");
-            //Console.WriteLine($"redHuffmanTreeRoot:{redHuffmanTreeRoot.Hexa}");
-            //foreach (var node in RedHuffmanTree)
-            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
-
-            //Console.WriteLine("GreenHuffmanTree");
-            //Console.WriteLine($"greenHuffmanTreeRoot:{greenHuffmanTreeRoot.Hexa}");
-            //foreach (var node in GreenHuffmanTree)
-            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
-
-            //Console.WriteLine("BlueHuffmanTree");
-            //Console.WriteLine($"blueHuffmanTreeRoot:{blueHuffmanTreeRoot.Hexa}");
-            //foreach (var node in BlueHuffmanTree)
-            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
-
-
             // Compressed Image
             List<byte>[] CompressedImage = CreateCompressedImage(ImageMatrix);
 
+            // calcualte compression ratio
+            CalcCompressionRatio();
+
             // Save in Binary File
             BinaryFileOperations.CreateBinaryFile(CompressedImage);
+        }
+
+        private static void Intialize()
+        {
+            RedFrequency = new Dictionary<byte, int>();
+            BlueFrequency = new Dictionary<byte, int>();
+            GreenFrequency = new Dictionary<byte, int>();
+
+            // Priority Queue for each color
+            RedQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
+            GreenQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
+            BlueQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
+
+            // Compressed map for each color
+            RedBinaryCode = new Dictionary<int, string>();
+            GreenBinaryCode = new Dictionary<int, string>();
+            BlueBinaryCode = new Dictionary<int, string>();
+
+            // Huffman Tree each short
+            RedHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+            GreenHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+            BlueHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+
+            RedCompressedBits = GreenCompressedBits = BlueCompressedBits = 0;
+            ImageHeight = ImageWidth = 0;
+            redHuffmanTreeRoot = null;
+            greenHuffmanTreeRoot = null;
+            blueHuffmanTreeRoot = null;
+
+            isEncrypted = false;
         }
 
         private static void CalcFrequency(RGBPixel[,] ImageMatrix)

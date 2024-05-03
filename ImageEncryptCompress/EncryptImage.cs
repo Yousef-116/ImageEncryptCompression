@@ -104,18 +104,15 @@ namespace ImageEncryptCompress
         }
         
 
-
-
-
-
-
-        public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, int integerSeed, int SeedLength, int Tap_position)
+        public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, string seed, int SeedLength, int Tap_position)
         {
             //Stopwatch sw = Stopwatch.StartNew();
+            Seed = seed;
+            int integerSeed = Convert.ToInt32(seed, 2);
+            Console.WriteLine($"Seed = {Seed}");
 
             int Height = ImageMatrix.GetLength(0);
             int Width = ImageMatrix.GetLength(1);
-            //Seed = seed.ToString();
             TapPosition = (ushort)Tap_position;
 
             RGBPixelD Item1D;
@@ -326,11 +323,11 @@ namespace ImageEncryptCompress
             Console.WriteLine("break time is ms : " + sw.ElapsedMilliseconds);
             
             Console.WriteLine("predicate Seed : " + optimalSeed + " predicate Tap Position " + optimalTapPosition);
-            int integerseed = Convert.ToInt32(optimalSeed,2);
+            //int integerseed = Convert.ToInt32(optimalSeed,2);
 
             //Console.WriteLine("intseed : " +integerseed+" seed.length : "+ optimalSeed.Length + " tap_position : " + optimalTapPosition);
 
-            return Encrypt(ImageMatrix,integerseed,SeedLength, optimalTapPosition);
+            return Encrypt(ImageMatrix, optimalSeed, SeedLength, optimalTapPosition);
 
         }
 
@@ -389,7 +386,7 @@ namespace ImageEncryptCompress
 
         public static List<byte> GetBinarySeed()
         {
-            List<byte> seedList; seedList = new List<byte>() { 0 };
+            List<byte> seedList = new List<byte>() { 0 };
             int startIndex = 0;
             Compression.AddBits(seedList, Seed, ref startIndex);
 
