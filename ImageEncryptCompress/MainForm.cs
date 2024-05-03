@@ -127,10 +127,13 @@ namespace ImageEncryptCompress
         private void breakEncrypt_btn_Click(object sender, EventArgs e)
         {
             int seedLength = Convert.ToInt32(SeedLength.Text);
-
-            EncryptedImageMatrix = EncryptImage.breakEncrypt(ImageMatrix, seedLength);
+            EncryptedImageMatrix = EncryptImage.breakEncrypt(ImageMatrix,seedLength);
+            Init_seed.Text = EncryptImage.Seed;
+            Tap.Text = EncryptImage.TapPosition.ToString();
             ImageOperations.DisplayImage(EncryptedImageMatrix, pictureBox2);
             //Console.WriteLine("Done");
+            // save image //
+            saveImage(EncryptedImageMatrix);
         }
 
         private void encrypt_btn_Click(object sender, EventArgs e)
