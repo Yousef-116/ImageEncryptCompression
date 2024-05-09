@@ -15,14 +15,14 @@ namespace ImageEncryptCompress
 
         public static RGBPixel[,] Encrypt(RGBPixel[,] ImageMatrix, string seed, int SeedLength, int Tap_position)
         {
-            //Stopwatch sw = Stopwatch.StartNew();
+            Stopwatch sw = Stopwatch.StartNew();
 
             int Height = ImageMatrix.GetLength(0);
             int Width = ImageMatrix.GetLength(1);
 
             TapPosition = (ushort)Tap_position;
             Seed = seed;
-            int integerSeed = Convert.ToInt32(seed, 2);
+            long integerSeed = Convert.ToInt64(seed, 2);
 
             RGBPixelD Item1D;
             RGBPixel Item2;
@@ -55,25 +55,25 @@ namespace ImageEncryptCompress
             }
 
 
-            //sw.Stop();
+            sw.Stop();
 
-            //Console.WriteLine("time normal encrypt : " + sw.ElapsedMilliseconds);
+            Console.WriteLine("time normal encrypt : " + sw.ElapsedMilliseconds);
 
             return EncryptedImageMatrix;
         }
        
-        public static int generateNew8Bits(ref int seed, int seedLength, int Tap_position)
+        public static int generateNew8Bits(ref long seed, int seedLength, int Tap_position)
         {
-            int key = 0;
+            long key = 0;
 
             for (int i = 0; i < 8; i++)
             {
                 //int varfortap = ( seed >> TapPosition ) ;
-                int tapBit = (seed >> (Tap_position)) & 1;
+                long tapBit = (seed >> (Tap_position)) & 1;
 
-                int lastBit = (seed >> (seedLength - 1)) & 1;
+                long lastBit = (seed >> (seedLength - 1)) & 1;
 
-                int newBit = tapBit ^ lastBit;
+                long newBit = tapBit ^ lastBit;
                 key <<= 1;
                 key |= newBit << 0;
 
@@ -104,14 +104,14 @@ namespace ImageEncryptCompress
             //TryImageMatrix = ImageMatrix;
             RGBPixel Item;
             Console.WriteLine("Break Encrypt function :");
-            for (int seed = 0; seed < Math.Pow(2, SeedLength); seed++)
+            for (long seed = 0; seed < Math.Pow(2, SeedLength); seed++)
             {
                 for (int tapPosition = 0; tapPosition < SeedLength; tapPosition++)
                 {
                     bool valid = true;
                     string seedBinary = Convert.ToString(seed, 2).PadLeft(SeedLength, '0');
                     //Console.WriteLine("TapPosition : " + tapPosition + " | Seed : " + seedBinary);
-                    int intSeed = Convert.ToInt32(seedBinary, 2);
+                    long intSeed = Convert.ToInt64(seedBinary, 2);
                     //sw.Stop();
                     RGBPixel[,] breakEncryptImageMatrix = Encrypt_for_break(ImageMatrix, intSeed, SeedLength, tapPosition, ref valid);
                     //sw.Start();
@@ -191,7 +191,7 @@ namespace ImageEncryptCompress
 
         }
 
-        public static RGBPixel[,] Encrypt_for_break(RGBPixel[,] ImageMatrix, int integerSeed, int SeedLength, int Tap_position, ref bool valid)
+        public static RGBPixel[,] Encrypt_for_break(RGBPixel[,] ImageMatrix, long integerSeed, int SeedLength, int Tap_position, ref bool valid)
         {
             //Stopwatch sw = Stopwatch.StartNew();
 

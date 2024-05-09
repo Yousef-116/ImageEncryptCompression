@@ -69,6 +69,8 @@ namespace ImageEncryptCompress
         // Compress Function
         public static void CompressImage(RGBPixel[,] ImageMatrix, bool isencrypted)
         {
+            Stopwatch sws = Stopwatch.StartNew();
+
             Intialize();
 
             ImageHeight = ImageOperations.GetHeight(ImageMatrix);  // rows
@@ -93,6 +95,8 @@ namespace ImageEncryptCompress
             // calcualte compression ratio
             CalcCompressionRatio();
 
+            sws.Stop();
+            Console.WriteLine("time normal Copresss ->: " + sws.ElapsedMilliseconds);
             // Save in Binary File
             BinaryFileOperations.CreateBinaryFile(CompressedImage);
         }
