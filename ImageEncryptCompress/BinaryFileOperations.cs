@@ -34,7 +34,6 @@ namespace ImageEncryptCompress
                  * 
                  * Initial Seed length
                  * Initial SeedList length
-                 * Initial Seed
                  * Tap position
                  * 
                  * Height
@@ -58,7 +57,7 @@ namespace ImageEncryptCompress
                 #region Seed
                 if (Compression.isEncrypted == true)
                 {
-                    writer.Write((byte)1);
+                    writer.Write(true);
                     writer.Write((ushort)EncryptImage.Seed.Length);
 
                     List<byte> seedList = EncryptImage.GetBinarySeed();
@@ -74,7 +73,7 @@ namespace ImageEncryptCompress
                 }
                 else
                 {
-                    writer.Write((byte)0);
+                    writer.Write(false);
                 }
                 #endregion
 
@@ -139,6 +138,8 @@ namespace ImageEncryptCompress
                 // Open the binary file for reading
                 using (BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open)))
                 {
+
+                    #region Seed
                     byte byteValue = 0;
 
                     //isEncrypted
@@ -162,7 +163,7 @@ namespace ImageEncryptCompress
 
                         Decompressoin.TapPosition = reader.ReadInt16();
                     }
-
+                    #endregion
 
                     // Height, Width
                     Decompressoin.ImageHeight = reader.ReadInt32();
@@ -173,17 +174,17 @@ namespace ImageEncryptCompress
                     //Red Huffman Tree length
                     short treeSize = reader.ReadByte();
                     //Red Huffman Tree
-                    short parent, child1, child2;
+                    short node, left, right;
 
                     //Console.WriteLine("\nRed Huffman Tree");
                     Decompressoin.redHuffmanTreeRoot = (short)(treeSize + 259);
                     while (treeSize-- > 0)
                     {
-                        parent = reader.ReadInt16();
-                        child1 = reader.ReadInt16();
-                        child2 = reader.ReadInt16();
-                        Decompressoin.RedHuffmanTree.Add(parent, new Tuple<short, short>(child1, child2));
-                        //Console.WriteLine($"{parent}: {child1}, {child2}");
+                        node = reader.ReadInt16();
+                        left = reader.ReadInt16();
+                        right = reader.ReadInt16();
+                        Decompressoin.RedHuffmanTree.Add(node, new Tuple<short, short>(left, right));
+                        //Console.WriteLine($"{node}: {left}, {right}");
                     }
 
                     //Green Huffman Tree length
@@ -193,11 +194,11 @@ namespace ImageEncryptCompress
                     Decompressoin.greenHuffmanTreeRoot = (short)(treeSize + 259);
                     while (treeSize-- > 0)
                     {
-                        parent = reader.ReadInt16();
-                        child1 = reader.ReadInt16();
-                        child2 = reader.ReadInt16();
-                        Decompressoin.GreenHuffmanTree.Add(parent, new Tuple<short, short>(child1, child2));
-                        //Console.WriteLine($"{parent}: {child1}, {child2}");
+                        node = reader.ReadInt16();
+                        left = reader.ReadInt16();
+                        right = reader.ReadInt16();
+                        Decompressoin.GreenHuffmanTree.Add(node, new Tuple<short, short>(left, right));
+                        //Console.WriteLine($"{node}: {left}, {right}");
                     }
 
                     //Blue Huffman Tree length
@@ -207,11 +208,11 @@ namespace ImageEncryptCompress
                     Decompressoin.blueHuffmanTreeRoot = (short)(treeSize + 259);
                     while (treeSize-- > 0)
                     {
-                        parent = reader.ReadInt16();
-                        child1 = reader.ReadInt16();
-                        child2 = reader.ReadInt16();
-                        Decompressoin.BlueHuffmanTree.Add(parent, new Tuple<short, short>(child1, child2));
-                        //Console.WriteLine($"{parent}: {child1}, {child2}");
+                        node = reader.ReadInt16();
+                        left = reader.ReadInt16();
+                        right = reader.ReadInt16();
+                        Decompressoin.BlueHuffmanTree.Add(node, new Tuple<short, short>(left, right));
+                        //Console.WriteLine($"{node}: {left}, {right}");
                     }
 
                     #endregion

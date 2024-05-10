@@ -88,10 +88,7 @@ namespace ImageEncryptCompress
                             break;
                         }
                         j = cnt % ImageWidth;
-                        //Console.WriteLine(i + " " + j);
                         ImageMatrix[i, j].red = (byte)currNode;
-                        //Console.Write(currNode + " ");
-                        //Console.WriteLine("here4");
 
                         currNode = redHuffmanTreeRoot;
                         cnt++;

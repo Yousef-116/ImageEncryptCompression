@@ -41,9 +41,9 @@ namespace ImageEncryptCompress
 
         // Image Data Structures 
         // Frequency Dictionaries
-        public static Dictionary<byte, int> RedFrequency;
-        public static Dictionary<byte, int> GreenFrequency;
-        public static Dictionary<byte, int> BlueFrequency;
+        static Dictionary<byte, int> RedFrequency;
+        static Dictionary<byte, int> GreenFrequency;
+        static Dictionary<byte, int> BlueFrequency;
 
         // Priority Queue for each color
         public static PriorityQueue<HuffmanNode> RedQueue;
@@ -51,9 +51,9 @@ namespace ImageEncryptCompress
         public static PriorityQueue<HuffmanNode> BlueQueue;
 
         // Compressed map for each color
-        public static Dictionary<int, string> RedBinaryCode;
-        public static Dictionary<int, string> GreenBinaryCode;
-        public static Dictionary<int, string> BlueBinaryCode;
+        public static Dictionary<short, string> RedBinaryCode;
+        public static Dictionary<short, string> GreenBinaryCode;
+        public static Dictionary<short, string> BlueBinaryCode;
 
         // Huffman Tree each short
         public static Dictionary<short, Tuple<short, short>> RedHuffmanTree;
@@ -96,7 +96,7 @@ namespace ImageEncryptCompress
             CalcCompressionRatio();
 
             sws.Stop();
-            Console.WriteLine("time normal Copresss ->: " + sws.ElapsedMilliseconds);
+            Console.WriteLine("Time Copresss: " + sws.ElapsedMilliseconds);
             // Save in Binary File
             BinaryFileOperations.CreateBinaryFile(CompressedImage);
         }
@@ -113,9 +113,9 @@ namespace ImageEncryptCompress
             BlueQueue = new PriorityQueue<HuffmanNode>(new HuffmanNodeComparer());
 
             // Compressed map for each color
-            RedBinaryCode = new Dictionary<int, string>();
-            GreenBinaryCode = new Dictionary<int, string>();
-            BlueBinaryCode = new Dictionary<int, string>();
+            RedBinaryCode = new Dictionary<short, string>();
+            GreenBinaryCode = new Dictionary<short, string>();
+            BlueBinaryCode = new Dictionary<short, string>();
 
             // Huffman Tree each short
             RedHuffmanTree = new Dictionary<short, Tuple<short, short>>();
@@ -133,16 +133,15 @@ namespace ImageEncryptCompress
 
         private static void CalcFrequency(RGBPixel[,] ImageMatrix)
         {
-
+            byte red, green, blue;
             for (int i = 0; i < ImageHeight; i++)
             {
                 for (int j = 0; j < ImageWidth; j++)
                 {
 
-                    byte red = ImageMatrix[i, j].red; // Extract red component
-                    //Console.Write(red + " ");
-                    byte green = ImageMatrix[i, j].green;
-                    byte blue = ImageMatrix[i, j].blue;
+                    red = ImageMatrix[i, j].red;
+                    green = ImageMatrix[i, j].green;
+                    blue = ImageMatrix[i, j].blue;
 
                     // Update red frequency
                     if (!RedFrequency.ContainsKey(red))
@@ -165,164 +164,191 @@ namespace ImageEncryptCompress
 
         private static void InitColorQueues()
         {
-            //Console.WriteLine("Red Color Frequencies");
-            foreach (var RedPixel in RedFrequency)
+            Task redTask = Task.Factory.StartNew(() =>
             {
-                HuffmanNode node = new HuffmanNode();
+                //Console.WriteLine("Red Color Frequencies");
+                HuffmanNode node;
+                foreach (var RedPixel in RedFrequency)
+                {
+                    node = new HuffmanNode();
 
-                node.Hexa = RedPixel.Key;
-                node.left = null;
-                node.right = null;
-                node.frequency = RedPixel.Value;
+                    node.Hexa = RedPixel.Key;
+                    node.left = null;
+                    node.right = null;
+                    node.frequency = RedPixel.Value;
 
-                RedQueue.Enqueue(node);
-                //Console.WriteLine(node.Hexa + ":" + node.frequency);
-            }
+                    RedQueue.Enqueue(node);
+                    //Console.WriteLine(node.Hexa + ":" + node.frequency);
+                }
+            });
 
-            //Console.WriteLine("\nGreen Color Frequencies");
-            foreach (var GreenPixel in GreenFrequency)
+            Task greenTask = Task.Factory.StartNew(() =>
             {
-                HuffmanNode node = new HuffmanNode();
+                //Console.WriteLine("\nGreen Color Frequencies");
+                HuffmanNode node;
+                foreach (var GreenPixel in GreenFrequency)
+                {
+                    node = new HuffmanNode();
 
-                node.Hexa = GreenPixel.Key;
-                node.left = null;
-                node.right = null;
-                node.frequency = GreenPixel.Value;
+                    node.Hexa = GreenPixel.Key;
+                    node.left = null;
+                    node.right = null;
+                    node.frequency = GreenPixel.Value;
 
-                GreenQueue.Enqueue(node);
-                //Console.WriteLine(node.Hexa + ":" + node.frequency);
-            }
+                    GreenQueue.Enqueue(node);
+                    //Console.WriteLine(node.Hexa + ":" + node.frequency);
+                }
+            });
 
-            //Console.WriteLine("\nBlue Color Frequencies");
-            foreach (var BluePixel in BlueFrequency)
+            Task blueTask = Task.Factory.StartNew(() =>
             {
-                HuffmanNode node = new HuffmanNode();
+                //Console.WriteLine("\nBlue Color Frequencies");
+                HuffmanNode node;
+                foreach (var BluePixel in BlueFrequency)
+                {
+                    node = new HuffmanNode();
 
-                node.Hexa = BluePixel.Key;
-                node.left = null;
-                node.right = null;
-                node.frequency = BluePixel.Value;
+                    node.Hexa = BluePixel.Key;
+                    node.left = null;
+                    node.right = null;
+                    node.frequency = BluePixel.Value;
 
-                BlueQueue.Enqueue(node);
-                //Console.WriteLine(node.Hexa + ":" + node.frequency);
-            }
+                    BlueQueue.Enqueue(node);
+                    //Console.WriteLine(node.Hexa + ":" + node.frequency);
+                }
+            });
+
+            Task.WaitAll(redTask, greenTask, blueTask);
         }
 
         private static void BuildHuffmanTrees()
         {
-            short nodeNum = 260;
-            for (int k = 0; k < RedFrequency.Count - 1; k++)
+            Task redTask = Task.Factory.StartNew(() =>
             {
-                HuffmanNode node = new HuffmanNode();
+                short nodeNum = 260;
+                while (RedQueue.Count > 1)
+                {
+                    HuffmanNode node = new HuffmanNode();
 
-                node.Hexa = nodeNum++;
-                //MessageBox.Show($"Removing red pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
-                node.right = RedQueue.Dequeue();
-                node.left = RedQueue.Dequeue();
-                //MessageBox.Show($"Removing red pixel name: {node.right.Hexa} with frequency = {node.right.frequency}");
-                node.frequency = node.left.frequency + node.right.frequency;
+                    node.Hexa = nodeNum++;
+                    //MessageBox.Show($"Removing red pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
+                    node.right = RedQueue.Dequeue();
+                    node.left = RedQueue.Dequeue();
+                    //MessageBox.Show($"Removing red pixel name: {node.right.Hexa} with frequency = {node.right.frequency}");
+                    node.frequency = node.left.frequency + node.right.frequency;
 
-                //RedTop = node;
-                RedQueue.Enqueue(node);
+                    //RedTop = node;
+                    RedQueue.Enqueue(node);
 
-                RedHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
-            }
-            //Console.WriteLine("\nRed Huffman Tree");
-            //foreach(var node in RedHuffmanTree)
-            //{
-            //    Console.WriteLine($"{node.Key}: {node.Value.Item1}, {node.Value.Item2}");
-            //}
-            //Console.WriteLine("Red tree size: " + RedHuffmanTree.Count);
+                    RedHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
+                }
+            });
 
-            nodeNum = 260;
-            for (int k = 0; k < GreenFrequency.Count - 1; k++)
+            Task greenTask = Task.Factory.StartNew(() =>
             {
-                HuffmanNode node = new HuffmanNode();
+                short nodeNum = 260;
+                while (GreenQueue.Count > 1)
+                {
+                    HuffmanNode node = new HuffmanNode();
 
-                node.Hexa = nodeNum++;
-                //MessageBox.Show($"Removing green pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
-                node.right = GreenQueue.Dequeue();
-                node.left = GreenQueue.Dequeue();
-                //MessageBox.Show($"Removing green pixel name: {node.right.Hexa} with frequency = {node.right.frequency}");
-                node.frequency = node.left.frequency + node.right.frequency;
+                    node.Hexa = nodeNum++;
+                    //MessageBox.Show($"Removing green pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
+                    node.right = GreenQueue.Dequeue();
+                    node.left = GreenQueue.Dequeue();
+                    //MessageBox.Show($"Removing green pixel name: {node.right.Hexa} with frequency = {node.right.frequency}");
+                    node.frequency = node.left.frequency + node.right.frequency;
 
-                //GreenTop = node;
-                GreenQueue.Enqueue(node);
+                    //GreenTop = node;
+                    GreenQueue.Enqueue(node);
 
-                GreenHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
-            }
+                    GreenHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
+                }
+            });
 
-            nodeNum = 260;
-            for (int k = 0; k < BlueFrequency.Count - 1; k++)
+            Task blueTask = Task.Factory.StartNew(() =>
             {
-                HuffmanNode node = new HuffmanNode();
+                short nodeNum = 260;
+                while (BlueQueue.Count > 1)
+                {
+                    HuffmanNode node = new HuffmanNode();
 
-                node.Hexa = nodeNum++;
-                //MessageBox.Show($"Removing blue pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
-                node.right = BlueQueue.Dequeue();
-                //MessageBox.Show($"Removing blue pixel name: {node.right.Hexa} with frequency = {node.right.frequency}");
-                node.left = BlueQueue.Dequeue();
-                node.frequency = node.left.frequency + node.right.frequency;
+                    node.Hexa = nodeNum++;
+                    //MessageBox.Show($"Removing blue pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
+                    node.right = BlueQueue.Dequeue();
+                    //MessageBox.Show($"Removing blue pixel name: {node.right.Hexa} with frequency = {node.right.frequency}");
+                    node.left = BlueQueue.Dequeue();
+                    node.frequency = node.left.frequency + node.right.frequency;
 
-                //BlueTop = node;
-                BlueQueue.Enqueue(node);
+                    //BlueTop = node;
+                    BlueQueue.Enqueue(node);
 
-                BlueHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
-            }
+                    BlueHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
+                }
+            });
+
+            Task.WaitAll(redTask, greenTask, blueTask);
         }
 
         private static void BinaryCode()
         {
-            //Console.WriteLine("\n\nRed Colors Binary Code");
-            redHuffmanTreeRoot = RedQueue.Dequeue();
-            GetBinaryCode(redHuffmanTreeRoot, new int[RedFrequency.Count], 0, Color.RED);
+            //Task redTask = Task.Factory.StartNew(() =>
+            //{
+                //Console.WriteLine("\n\nRed Colors Binary Code");
+                redHuffmanTreeRoot = RedQueue.Dequeue();
+                GetBinaryCode(redHuffmanTreeRoot, new StringBuilder(), Color.RED);
+            //});
 
-            greenHuffmanTreeRoot = GreenQueue.Dequeue();
-            //Console.WriteLine("\nGreen Colors Binary Code");
-            GetBinaryCode(greenHuffmanTreeRoot, new int[GreenFrequency.Count], 0, Color.GREEN);
+            //Task greenTask = Task.Factory.StartNew(() =>
+            //{
+                greenHuffmanTreeRoot = GreenQueue.Dequeue();
+                //Console.WriteLine("\nGreen Colors Binary Code");
+                GetBinaryCode(greenHuffmanTreeRoot, new StringBuilder(), Color.GREEN);
+            //});
 
-            blueHuffmanTreeRoot = BlueQueue.Dequeue();
-            //Console.WriteLine("\nBlue Colors Binary Code");
-            GetBinaryCode(blueHuffmanTreeRoot, new int[BlueFrequency.Count], 0, Color.BLUE);
+            //Task blueTask = Task.Factory.StartNew(() =>
+            //{
+                blueHuffmanTreeRoot = BlueQueue.Dequeue();
+                //Console.WriteLine("\nBlue Colors Binary Code");
+                GetBinaryCode(blueHuffmanTreeRoot, new StringBuilder(), Color.BLUE);
+            //});
+
+            //Task.WaitAll(redTask, greenTask, blueTask);
         }
 
-        private static void GetBinaryCode(HuffmanNode root, int[] arr, int top, Color color)
+        private static void GetBinaryCode(HuffmanNode root, StringBuilder bits, Color color)
         {
             if (root.left != null)
             {
-                arr[top] = 0;
-                GetBinaryCode(root.left, arr, top + 1, color);
+                bits.Append('0');
+                GetBinaryCode(root.left, bits, color);
+                bits.Remove(bits.Length - 1, 1);
             }
 
             if (root.right != null)
             {
-                arr[top] = 1;
-                GetBinaryCode(root.right, arr, top + 1, color);
+                bits.Append('1');
+                GetBinaryCode(root.right, bits, color);
+                bits.Remove(bits.Length - 1, 1);
             }
 
             if (root.left == null && root.right == null)
             {
                 //MessageBox.Show($"Printing node name: {root.data}");
-                string bits = string.Empty;
-                for (int i = 0; i < top; i++)
-                {
-                    bits +=  (char)(arr[i] + '0');
-                }
 
                 if (color == Color.RED)
                 {
                     //Console.WriteLine(root.Hexa + ":" + bits);
-                    RedBinaryCode.Add(root.Hexa, bits);
+                    RedBinaryCode.Add(root.Hexa, bits.ToString());
                     RedCompressedBits += RedFrequency[(byte)root.Hexa] * bits.Length;
                 }
                 else if (color == Color.GREEN)
                 {
-                    GreenBinaryCode.Add(root.Hexa, bits);
+                    GreenBinaryCode.Add(root.Hexa, bits.ToString());
                     GreenCompressedBits += GreenFrequency[(byte)root.Hexa] * bits.Length;
                 }
                 else if (color == Color.BLUE)
                 {
-                    BlueBinaryCode.Add(root.Hexa, bits);
+                    BlueBinaryCode.Add(root.Hexa, bits.ToString());
                     BlueCompressedBits += BlueFrequency[(byte)root.Hexa] * bits.Length;
                 }
             }
@@ -332,32 +358,7 @@ namespace ImageEncryptCompress
         {
             double original_size = ImageHeight * ImageWidth * 24;
             double compressed_size = RedCompressedBits + GreenCompressedBits + BlueCompressedBits;
-            
-            /*
-            int frequency, size;
 
-            foreach (var RedPixel in RedFrequency)
-            {
-                frequency = RedPixel.Value;
-                size = RedBinaryCode[RedPixel.Key].Length;
-
-                RedCompressedBits += frequency * size;
-            }
-            foreach (var GreenPixel in GreenFrequency)
-            {
-                frequency = GreenPixel.Value;
-                size = GreenBinaryCode[GreenPixel.Key].Length;
-
-                GreenCompressedBits += frequency * size;
-            }
-            foreach (var BluePixel in BlueFrequency)
-            {
-                frequency = BluePixel.Value;
-                size = BlueBinaryCode[BluePixel.Key].Length;
-
-                BlueCompressedBits += frequency * size;
-            }
-            */
             
             Console.WriteLine($"\n\nOriginal size = {original_size} bits = {original_size / 8} bytes = {original_size / (8 * 1024)} KB");
             Console.WriteLine($"Compressed size = {compressed_size} bits = {compressed_size / 8} bytes = {compressed_size / (8 * 1024)} KB");
@@ -373,7 +374,7 @@ namespace ImageEncryptCompress
             CompressedImage[1] = new List<byte>() { 0 };
             CompressedImage[2] = new List<byte>() { 0 };
 
-
+            RGBPixel pixel;
             string redBinaryCode, greenBinaryCode, blueBinaryCode;
             int redStartIndex = 0, greenStartIndex = 0, blueStartIndex = 0;
 
@@ -381,14 +382,26 @@ namespace ImageEncryptCompress
             {
                 for (int j = 0; j < ImageWidth; ++j)
                 {
-                    redBinaryCode = RedBinaryCode[ImageMatrix[i, j].red];
-                    AddBits(CompressedImage[0], redBinaryCode, ref redStartIndex);
+                    pixel = ImageMatrix[i, j];
+                    //Task redTask = Task.Factory.StartNew(() =>
+                    //{
+                        redBinaryCode = RedBinaryCode[pixel.red];
+                        AddBits(CompressedImage[0], redBinaryCode, ref redStartIndex);
+                    //});
 
-                    greenBinaryCode = GreenBinaryCode[ImageMatrix[i, j].green];
-                    AddBits(CompressedImage[1], greenBinaryCode, ref greenStartIndex);
+                    //Task greenTask = Task.Factory.StartNew(() =>
+                    //{
+                        greenBinaryCode = GreenBinaryCode[pixel.green];
+                        AddBits(CompressedImage[1], greenBinaryCode, ref greenStartIndex);
+                    //});
 
-                    blueBinaryCode = BlueBinaryCode[ImageMatrix[i, j].blue];
-                    AddBits(CompressedImage[2], blueBinaryCode, ref blueStartIndex);
+                    //Task blueTask = Task.Factory.StartNew(() =>
+                    //{
+                        blueBinaryCode = BlueBinaryCode[pixel.blue];
+                        AddBits(CompressedImage[2], blueBinaryCode, ref blueStartIndex);
+                    //});
+
+                    //Task.WaitAll(redTask, greenTask, blueTask);
                 }
             }
 
@@ -412,8 +425,6 @@ namespace ImageEncryptCompress
             //Console.WriteLine(channel[channel.Count - 1]);
 
         }
-
-
 
     }
 }

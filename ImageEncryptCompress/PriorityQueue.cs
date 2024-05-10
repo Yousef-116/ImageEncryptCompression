@@ -28,13 +28,13 @@ namespace ImageEncryptCompress
 
             while(index > 0)
             {
-                int parentIndex = (index - 1) / 2;
+                int nodeIndex = (index - 1) / 2;
                 // new element has higher priority
-                if (comparer.Compare(elements[parentIndex], elements[index]) <= 0)
+                if (comparer.Compare(elements[nodeIndex], elements[index]) <= 0)
                     break;
                 // Swap two queue elements
-                Swap(index, parentIndex);
-                index = parentIndex;
+                Swap(index, nodeIndex);
+                index = nodeIndex;
             }
         }
 
