@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+//using static ImageEncryptCompress.Compression;
 
 namespace ImageEncryptCompress
 {
@@ -54,6 +55,28 @@ namespace ImageEncryptCompress
                  * Blue Binary Code
                  */
 
+                /*
+                 * isEncrypted
+                 * 
+                 * Initial Seed length
+                 * Initial SeedList length
+                 * Tap position
+                 * 
+                 * Height
+                 * Width
+                 * 
+                 * Red Huffman Tree 
+                 * Green Huffman Tree 
+                 * Blue Huffman Tree
+                 * 
+                 * Red Binary Code length
+                 * Red Binary Code
+                 * Green Binary Code length
+                 * Green Binary Code
+                 * Blue Binary Code length
+                 * Blue Binary Code
+                 */
+
                 #region Seed
                 if (Compression.isEncrypted == true)
                 {
@@ -82,28 +105,52 @@ namespace ImageEncryptCompress
 
                 #region HuffmanTree
 
-                writer.Write((byte)Compression.RedHuffmanTree.Count);
-                foreach (var node in Compression.RedHuffmanTree)
+                Queue<Compression.HuffmanNode> queue = new Queue<Compression.HuffmanNode>();
+                Compression.HuffmanNode tempNode;
+
+                //Console.WriteLine("\n\n Red Tree");
+                queue.Enqueue(Compression.redHuffmanTreeRoot);
+                while (queue.Count > 0)
                 {
-                    writer.Write(node.Key);
-                    writer.Write(node.Value.Item1);
-                    writer.Write(node.Value.Item2);
+                    tempNode = queue.Dequeue();
+                    if (tempNode.Hexa == 333)
+                    {
+                        queue.Enqueue(tempNode.left);
+                        queue.Enqueue(tempNode.right);
+                    }
+
+                    writer.Write(tempNode.Hexa);
+                    Console.WriteLine(tempNode.Hexa);
                 }
 
-                writer.Write((byte)Compression.GreenHuffmanTree.Count);
-                foreach (var node in Compression.GreenHuffmanTree)
+                //Console.WriteLine("\n\n Green Tree");
+                queue.Enqueue(Compression.greenHuffmanTreeRoot);
+                while (queue.Count > 0)
                 {
-                    writer.Write(node.Key);
-                    writer.Write(node.Value.Item1);
-                    writer.Write(node.Value.Item2);
+                    tempNode = queue.Dequeue();
+                    if (tempNode.Hexa == 333)
+                    {
+                        queue.Enqueue(tempNode.left);
+                        queue.Enqueue(tempNode.right);
+                    }
+
+                    writer.Write(tempNode.Hexa);
+                    Console.WriteLine(tempNode.Hexa);
                 }
 
-                writer.Write((byte)Compression.BlueHuffmanTree.Count);
-                foreach (var node in Compression.BlueHuffmanTree)
+                //Console.WriteLine("\n\n Blue Tree");
+                queue.Enqueue(Compression.blueHuffmanTreeRoot);
+                while (queue.Count > 0)
                 {
-                    writer.Write(node.Key);
-                    writer.Write(node.Value.Item1);
-                    writer.Write(node.Value.Item2);
+                    tempNode = queue.Dequeue();
+                    if (tempNode.Hexa == 333)
+                    {
+                        queue.Enqueue(tempNode.left);
+                        queue.Enqueue(tempNode.right);
+                    }
+
+                    writer.Write(tempNode.Hexa);
+                    Console.WriteLine(tempNode.Hexa);
                 }
 
                 #endregion
@@ -171,48 +218,73 @@ namespace ImageEncryptCompress
 
                     #region HuffmanTree
 
-                    //Red Huffman Tree length
-                    short treeSize = reader.ReadByte();
-                    //Red Huffman Tree
-                    short node, left, right;
+                    Queue<Compression.HuffmanNode> queue = new Queue<Compression.HuffmanNode>();
+                    Compression.HuffmanNode node;
 
-                    //Console.WriteLine("\nRed Huffman Tree");
-                    Decompressoin.redHuffmanTreeRoot = (short)(treeSize + 259);
-                    while (treeSize-- > 0)
+                    // Read Red Tree
+                    short value = reader.ReadInt16();
+                    Decompressoin.redHuffmanTreeRoot = new Compression.HuffmanNode(value);
+                    if (value == 333)
                     {
-                        node = reader.ReadInt16();
-                        left = reader.ReadInt16();
-                        right = reader.ReadInt16();
-                        Decompressoin.RedHuffmanTree.Add(node, new Tuple<short, short>(left, right));
-                        //Console.WriteLine($"{node}: {left}, {right}");
+                        queue.Enqueue(Decompressoin.redHuffmanTreeRoot);
+                        while(queue.Count > 0)
+                        {
+                            node = queue.Dequeue();
+
+                            //left
+                            value = reader.ReadInt16();
+                            node.left = new Compression.HuffmanNode(value);
+                            if(value == 333) queue.Enqueue(node.left);
+
+                            //right
+                            value = reader.ReadInt16();
+                            node.right = new Compression.HuffmanNode(value);
+                            if (value == 333) queue.Enqueue(node.right);
+                        }
                     }
 
-                    //Green Huffman Tree length
-                    treeSize = reader.ReadByte();
-                    //Green Huffman Tree
-                    //Console.WriteLine("\nGreen Huffman Tree");
-                    Decompressoin.greenHuffmanTreeRoot = (short)(treeSize + 259);
-                    while (treeSize-- > 0)
+                    // Read Green Tree
+                    value = reader.ReadInt16();
+                    Decompressoin.greenHuffmanTreeRoot = new Compression.HuffmanNode(value);
+                    if (value == 333)
                     {
-                        node = reader.ReadInt16();
-                        left = reader.ReadInt16();
-                        right = reader.ReadInt16();
-                        Decompressoin.GreenHuffmanTree.Add(node, new Tuple<short, short>(left, right));
-                        //Console.WriteLine($"{node}: {left}, {right}");
+                        queue.Enqueue(Decompressoin.greenHuffmanTreeRoot);
+                        while (queue.Count > 0)
+                        {
+                            node = queue.Dequeue();
+
+                            //left
+                            value = reader.ReadInt16();
+                            node.left = new Compression.HuffmanNode(value);
+                            if (value == 333) queue.Enqueue(node.left);
+
+                            //right
+                            value = reader.ReadInt16();
+                            node.right = new Compression.HuffmanNode(value);
+                            if (value == 333) queue.Enqueue(node.right);
+                        }
                     }
 
-                    //Blue Huffman Tree length
-                    treeSize = reader.ReadByte();
-                    //Blue Huffman Tree
-                    //Console.WriteLine("\nBlue Huffman Tree");
-                    Decompressoin.blueHuffmanTreeRoot = (short)(treeSize + 259);
-                    while (treeSize-- > 0)
+                    // Read Blue Tree
+                    value = reader.ReadInt16();
+                    Decompressoin.blueHuffmanTreeRoot = new Compression.HuffmanNode(value);
+                    if (value == 333)
                     {
-                        node = reader.ReadInt16();
-                        left = reader.ReadInt16();
-                        right = reader.ReadInt16();
-                        Decompressoin.BlueHuffmanTree.Add(node, new Tuple<short, short>(left, right));
-                        //Console.WriteLine($"{node}: {left}, {right}");
+                        queue.Enqueue(Decompressoin.blueHuffmanTreeRoot);
+                        while (queue.Count > 0)
+                        {
+                            node = queue.Dequeue();
+
+                            //left
+                            value = reader.ReadInt16();
+                            node.left = new Compression.HuffmanNode(value);
+                            if (value == 333) queue.Enqueue(node.left);
+
+                            //right
+                            value = reader.ReadInt16();
+                            node.right = new Compression.HuffmanNode(value);
+                            if (value == 333) queue.Enqueue(node.right);
+                        }
                     }
 
                     #endregion

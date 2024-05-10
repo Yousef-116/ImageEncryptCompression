@@ -36,6 +36,21 @@ namespace ImageEncryptCompress
             public short Hexa;
             public int frequency;
             public HuffmanNode left, right;
+
+            public HuffmanNode(short hexa)
+            {
+                this.Hexa = hexa;
+                frequency = 0;
+                left = null;
+                right = null;
+            }
+
+            public HuffmanNode()
+            {
+                frequency = 0;
+                left = null;
+                right = null;
+            }
         }
 
 
@@ -56,9 +71,9 @@ namespace ImageEncryptCompress
         public static Dictionary<short, string> BlueBinaryCode;
 
         // Huffman Tree each short
-        public static Dictionary<short, Tuple<short, short>> RedHuffmanTree;
-        public static Dictionary<short, Tuple<short, short>> GreenHuffmanTree;
-        public static Dictionary<short, Tuple<short, short>> BlueHuffmanTree;
+        //public static Dictionary<short, Tuple<short, short>> RedHuffmanTree;
+        //public static Dictionary<short, Tuple<short, short>> GreenHuffmanTree;
+        //public static Dictionary<short, Tuple<short, short>> BlueHuffmanTree;
 
         private static int RedCompressedBits, GreenCompressedBits, BlueCompressedBits;
         public static int ImageHeight, ImageWidth;
@@ -118,9 +133,9 @@ namespace ImageEncryptCompress
             BlueBinaryCode = new Dictionary<short, string>();
 
             // Huffman Tree each short
-            RedHuffmanTree = new Dictionary<short, Tuple<short, short>>();
-            GreenHuffmanTree = new Dictionary<short, Tuple<short, short>>();
-            BlueHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+            //RedHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+            //GreenHuffmanTree = new Dictionary<short, Tuple<short, short>>();
+            //BlueHuffmanTree = new Dictionary<short, Tuple<short, short>>();
 
             RedCompressedBits = GreenCompressedBits = BlueCompressedBits = 0;
             ImageHeight = ImageWidth = 0;
@@ -223,14 +238,14 @@ namespace ImageEncryptCompress
 
         private static void BuildHuffmanTrees()
         {
+            const short notLeaf = 333;
             Task redTask = Task.Factory.StartNew(() =>
             {
-                short nodeNum = 260;
                 while (RedQueue.Count > 1)
                 {
                     HuffmanNode node = new HuffmanNode();
 
-                    node.Hexa = nodeNum++;
+                    node.Hexa = notLeaf;
                     //MessageBox.Show($"Removing red pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
                     node.right = RedQueue.Dequeue();
                     node.left = RedQueue.Dequeue();
@@ -240,18 +255,17 @@ namespace ImageEncryptCompress
                     //RedTop = node;
                     RedQueue.Enqueue(node);
 
-                    RedHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
+                    //RedHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
                 }
             });
 
             Task greenTask = Task.Factory.StartNew(() =>
             {
-                short nodeNum = 260;
                 while (GreenQueue.Count > 1)
                 {
                     HuffmanNode node = new HuffmanNode();
 
-                    node.Hexa = nodeNum++;
+                    node.Hexa = notLeaf;
                     //MessageBox.Show($"Removing green pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
                     node.right = GreenQueue.Dequeue();
                     node.left = GreenQueue.Dequeue();
@@ -261,18 +275,17 @@ namespace ImageEncryptCompress
                     //GreenTop = node;
                     GreenQueue.Enqueue(node);
 
-                    GreenHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
+                    //GreenHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
                 }
             });
 
             Task blueTask = Task.Factory.StartNew(() =>
             {
-                short nodeNum = 260;
                 while (BlueQueue.Count > 1)
                 {
                     HuffmanNode node = new HuffmanNode();
 
-                    node.Hexa = nodeNum++;
+                    node.Hexa = notLeaf;
                     //MessageBox.Show($"Removing blue pixel name: {node.left.Hexa} with frequency = {node.left.frequency}");
                     node.right = BlueQueue.Dequeue();
                     //MessageBox.Show($"Removing blue pixel name: {node.right.Hexa} with frequency = {node.right.frequency}");
@@ -282,7 +295,7 @@ namespace ImageEncryptCompress
                     //BlueTop = node;
                     BlueQueue.Enqueue(node);
 
-                    BlueHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
+                    //BlueHuffmanTree.Add(node.Hexa, new Tuple<short, short>(node.left.Hexa, node.right.Hexa));
                 }
             });
 
@@ -364,7 +377,7 @@ namespace ImageEncryptCompress
             Console.WriteLine($"Compressed size = {compressed_size} bits = {compressed_size / 8} bytes = {compressed_size / (8 * 1024)} KB");
             Console.WriteLine($"Compression ratio = {(compressed_size / original_size) * 100}%");
 
-            Console.WriteLine($"\nTree Size: {RedHuffmanTree.Count * 6} bytes = {RedHuffmanTree.Count * 6 / 1024.0} KB");
+            //Console.WriteLine($"\nTree Size: {RedHuffmanTree.Count * 6} bytes = {RedHuffmanTree.Count * 6 / 1024.0} KB");
         }
 
         private static List<byte>[] CreateCompressedImage(RGBPixel[,] ImageMatrix)
